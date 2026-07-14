@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Mai Dubai — Water and Light. A cinematic study in purity, sourced from the desert, perfected for the modern age.">
+<title>Mai Dubai — Water and Light</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,500&family=Outfit:wght@300;400;600&family=Cormorant+Garamond:ital,wght@500&display=swap');
+
+:root{
+    --black:#000000;
+    --stage:#04070c;
+    --ink:#eef7ff;
+    --body-text:#c9dce8;
+    --mute:#8fb0c4;
+    --gold:#d9b26a;
+    --gold-pale:#f6e2b3;
+    --gold-deep:#8a6a34;
+    --sapphire:#1e6fd9;
+    --sapphire-deep:#0a2e55;
+    --ice:#8ecfff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body {
+    min-height: 900vh;
+    font-family: 'Outfit', sans-serif;
+    color: #ffffff;
+    overflow-x: hidden;
+    cursor: none;
+}
+
+* { cursor: none !important; }
+
+::-webkit-scrollbar { display: none; width: 0; }
+
+#webgl {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    outline: none;
+}
+
+/* ---------- cursor ---------- */
+.cursor-inner {
+    position: fixed; top: 0; left: 0;
+    width: 6px; height: 6px;
+    border: 2px solid rgba(238, 247, 255, 1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+}
+.cursor-outer {
+    position: fixed; top: 0; left: 0;
+    width: 40px; height: 40px;
+    border: 1.5px solid rgba(142, 207, 255, 0.65);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9998;
+    transition: width 0.3s, height 0.3s, background 0.3s;
+}
+
+/* ---------- overlay shell ---------- */
+.cinematic-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 60px 40px 60px;
+    box-sizing: border-box;
+}
+
+/* ---------- header ---------- */
+.main-header {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; z-index: 20;
+    pointer-events: auto;
+    padding: 20px 0;
+}
+.brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: 0.5px;
+    color: var(--gold-pale);
+}
+.header-nav { display: flex; align-items: center; gap: 24px; }
+.nav-link {
+    color: #ffffff; text-decoration: none;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+    font-weight: 500; transition: color 0.3s;
+}
+.nav-link:hover { color: var(--gold-pale); }
+.nav-dot { width: 3px; height: 3px; background: rgba(180, 215, 255, 0.25); border-radius: 50%; }
+.contact-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, var(--gold-pale), var(--gold));
+    color: #081420;
+    text-decoration: none;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+    border-radius: 20px;
+    transition: transform 0.3s, background 0.3s;
+}
+.btn-circle {
+    display: inline-block; width: 6px; height: 6px;
+    border: 1px solid #081420; border-radius: 50%; background: transparent;
+}
+.contact-btn:hover { transform: scale(1.05); background: linear-gradient(135deg, #ffedc8, #e6c07f); }
+
+/* ---------- slides ---------- */
+.slide { position: absolute; bottom: 12%; pointer-events: none; }
+
+#slide-1 { left: 0; width: 100%; }
+#slide-1 .slide-title { margin-left: 60px; }
+#slide-1 .desc-row { position: relative; display: flex; width: 100%; }
+#slide-1 .col-1 {
+    margin-left: 60px;
+    width: calc(25vw - 60px);
+    max-width: calc(25vw - 60px);
+}
+#slide-1 .col-2 {
+    position: absolute;
+    left: calc(25vw + 40px);
+    width: calc(25vw - 60px);
+    max-width: calc(25vw - 60px);
+}
+
+#slide-2 { left: 0; width: 100%; }
+#slide-2-img {
+    position: fixed;
+    top: 90px;
+    left: 60px;
+    width: calc(25vw - 60px);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    z-index: 2;
+    pointer-events: none;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+    opacity: 0;
+    border: 1px solid rgba(217, 178, 106, 0.25);
+}
+#slide-2-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scale(1.15);
+    transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+    display: block;
+}
+#slide-2-img.active { clip-path: inset(0 0 0 0); opacity: 1; }
+#slide-2-img.active img { transform: scale(1); }
+
+#slide-2 .slide-title { margin-left: calc(25vw + 40px); }
+#slide-2 .slide-desc {
+    margin-left: calc(50vw + 20px);
+    width: calc(25vw - 60px);
+    max-width: calc(25vw - 60px);
+}
+
+#slide-3 {
+    left: calc(50vw + 20px);
+    width: calc(25vw - 60px);
+    max-width: calc(25vw - 60px);
+}
+#slide-3 .slide-title { white-space: nowrap; }
+
+#slide-4 { left: calc(25% + 40px); max-width: 600px; }
+
+.slide-title {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 116px;
+    line-height: 1.0;
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: var(--ink);
+}
+.slide-desc {
+    font-size: 16px; line-height: 1.7; font-weight: 300;
+    color: var(--body-text); letter-spacing: 0.5px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    transition-delay: 0.4s;
+}
+.slide.active .slide-desc { opacity: 1; transform: translateY(0); }
+
+.slide-title .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(50px);
+    filter: blur(12px);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                filter 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.slide.active .slide-title .char { opacity: 1; transform: translateY(0); filter: blur(0); }
+.slide.active { pointer-events: auto; }
+
+/* ---------- grid overlay ---------- */
+.story-dashes {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; gap: 12px;
+}
+.story-dash { width: 2px; height: 40px; background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
+.story-dash-fill { width: 100%; height: 0%; background: var(--gold-pale); border-radius: 2px; }
+
+.grid-horizontal-line {
+    position: fixed; top: 70px; left: 0; right: 0;
+    width: 100%; height: 1px;
+    background: rgba(180, 215, 255, 0.12);
+    z-index: 5; pointer-events: none;
+}
+.grid-lines {
+    position: fixed; top: 0; left: 40px; right: 40px;
+    width: calc(100% - 80px); height: 100vh;
+    display: flex; justify-content: space-between;
+    z-index: 5; pointer-events: none;
+}
+.grid-line {
+    position: relative; width: 1px; height: 100%;
+    background: rgba(180, 215, 255, 0.12);
+}
+.grid-line:nth-child(3) { margin-top: 70px; height: calc(100vh - 70px); }
+.grid-dot {
+    position: absolute; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(200, 225, 255, 0.4);
+    box-shadow: 0 0 4px rgba(150, 200, 255, 0.18);
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-inner"></div>
+<div class="cursor-outer"></div>
+
+<div class="cinematic-container">
+  <div class="main-header">
+    <div class="brand">Mai Dubai</div>
+    <nav class="header-nav">
+      <a href="#slide-1" class="nav-link">Source</a>
+      <span class="nav-dot"></span>
+      <a href="#slide-2" class="nav-link">Purity</a>
+      <span class="nav-dot"></span>
+      <a href="#slide-3" class="nav-link">Flow</a>
+      <span class="nav-dot"></span>
+      <a href="#slide-4" class="nav-link">Forever</a>
+    </nav>
+    <div class="header-actions">
+      <a href="#" class="contact-btn">Discover <span class="btn-circle"></span></a>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-1">
+    <h2 class="slide-title">Water <br>and Light</h2>
+    <div class="desc-row">
+      <p class="slide-desc col-1">Every drop begins beneath the desert, drawn pure and untouched, then perfected for the modern age through nine stages of purification.</p>
+      <p class="slide-desc col-2">Alkalized to pH8+, balanced to zero sodium — Mai Dubai carries the clarity of the Gulf and the light of the city it calls home.</p>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-2">
+    <h2 class="slide-title">Alkaline <br>Purity</h2>
+    <p class="slide-desc">pH8+. Zero sodium. A quiet luxury for the body, engineered for balance and bottled for life in the heart of Dubai.</p>
+  </div>
+
+  <div class="slide" id="slide-3">
+    <h2 class="slide-title">Liquid Gold</h2>
+    <p class="slide-desc">Light moves like water through glass — every current tracing the dunes at dawn and the deep sapphire of the Arabian Gulf at dusk.</p>
+  </div>
+
+  <div class="slide" id="slide-4">
+    <h2 class="slide-title">Pure <br>Forever</h2>
+    <p class="slide-desc">An icon of the city, reconsidered through new dimensions. Mai Dubai — water, elevated into light, motion, and glass.</p>
+  </div>
+</div>
+
+<div class="slide-image-mask" id="slide-2-img">
+  <img id="editorial-img" alt="Mai Dubai — Editorial Study">
+</div>
+
+<div class="grid-horizontal-line"></div>
+<div class="grid-lines">
+  <div class="grid-line"><div class="grid-dot top"></div><div class="grid-dot bottom"></div></div>
+  <div class="grid-line"><div class="grid-dot top"></div><div class="grid-dot bottom"></div></div>
+  <div class="grid-line"><div class="grid-dot top"></div><div class="grid-dot bottom"></div></div>
+  <div class="grid-line"><div class="grid-dot top"></div><div class="grid-dot bottom"></div></div>
+  <div class="grid-line story-progress-container">
+    <div class="grid-dot top"></div>
+    <div class="grid-dot bottom"></div>
+    <div class="story-dashes">
+      <div class="story-dash"><div class="story-dash-fill" id="dash-fill-1"></div></div>
+      <div class="story-dash"><div class="story-dash-fill" id="dash-fill-2"></div></div>
+      <div class="story-dash"><div class="story-dash-fill" id="dash-fill-3"></div></div>
+      <div class="story-dash"><div class="story-dash-fill" id="dash-fill-4"></div></div>
+    </div>
+  </div>
+</div>
+
+<canvas id="webgl"></canvas>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module">
+/* ==================== MAI DUBAI — WATER AND LIGHT ==================== */
+import * as THREE from 'three';
+
+const canvas = document.querySelector('#webgl');
+let scene, camera, renderer;
+let bottlePivot;   // pivot group for perfect center-rotation
+let bottleGroup;   // the scaled/recentered bottle
+let bottleTargetScale = 1;
+let bottleRevealStart = null;
+const clock = new THREE.Clock();
+let currentScroll = 0;
+
+let mouseX = 0, mouseY = 0, targetMouseX = 0, targetMouseY = 0;
+
+let cursorX = window.innerWidth / 2,  cursorY = window.innerHeight / 2;
+let outerCursorX = window.innerWidth / 2, outerCursorY = window.innerHeight / 2;
+
+let bgMaterial;
+const shaderUniforms = {
+    uTime: { value: 0 },
+    uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+    uMouse: { value: new THREE.Vector2(0, 0) },
+    uScroll: { value: 0 }
+};
+
+let mistParticles;
+const mistCount = 450;
+const mistData = [];
+
+const sizes = { width: window.innerWidth, height: window.innerHeight };
+
+function initScene() {
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color('#04070c');
+    scene.fog = new THREE.FogExp2('#03060b', 0.01);
+
+    camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height, 0.1, 100);
+    camera.position.set(0, 0.2, 3.0);
+    scene.add(camera);
+
+    createBackgroundShader();
+
+    renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: false,
+        powerPreference: "high-performance"
+    });
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 2.2;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    createLighting();
+
+    bottlePivot = new THREE.Group();
+    scene.add(bottlePivot);
+}
+
+function createLighting() {
+    const ambientLight = new THREE.AmbientLight('#dff2ff', 0.1);
+    scene.add(ambientLight);
+
+    // Key light: warm Dubai-sun gold-white from upper-right, casts shadows
+    const keyLight = new THREE.SpotLight('#fff2d9', 18.0);
+    keyLight.position.set(4, 6, 3);
+    keyLight.angle = Math.PI / 4;
+    keyLight.penumbra = 0.9;
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 2048;
+    keyLight.shadow.mapSize.height = 2048;
+    keyLight.shadow.camera.near = 1.0;
+    keyLight.shadow.camera.far = 15;
+    keyLight.shadow.bias = -0.001;
+    scene.add(keyLight);
+
+    // Rim light: sapphire blue from behind-left, defines the silhouette
+    const rimLight = new THREE.DirectionalLight('#5fc2ff', 10.0);
+    rimLight.position.set(-5, 3, -4);
+    scene.add(rimLight);
+
+    // Fill light: faint warm gold from below-front
+    const fillLight = new THREE.DirectionalLight('#ffe9c2', 0.8);
+    fillLight.position.set(-2, -4, 2);
+    scene.add(fillLight);
+}
+
+function onWindowResize() {
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    if (shaderUniforms) shaderUniforms.uResolution.value.set(sizes.width, sizes.height);
+}
+
+function createBackgroundShader() {
+    const vertexShader = `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `;
+
+    const fragmentShader = `
+        varying vec2 vUv;
+        uniform float uTime;
+        uniform vec2 uResolution;
+        uniform vec2 uMouse;
+        uniform float uScroll;
+
+        float hash(float n) { return fract(sin(n) * 43758.5453123); }
+        float noise(in vec3 x) {
+            vec3 p = floor(x);
+            vec3 f = fract(x);
+            f = f*f*(3.0-2.0*f);
+            float n = p.x + p.y*57.0 + 113.0*p.z;
+            return mix(mix(mix(hash(n+  0.0), hash(n+  1.0), f.x),
+                           mix(hash(n+ 57.0), hash(n+ 58.0), f.x), f.y),
+                       mix(mix(hash(n+113.0), hash(n+114.0), f.x),
+                           mix(hash(n+170.0), hash(n+171.0), f.x), f.y), f.z);
+        }
+
+        void main() {
+            vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / uResolution.y;
+            float aspect = uResolution.x / uResolution.y;
+
+            float time = uTime * 0.08;
+            float scroll = uScroll;
+
+            float angle1 = 0.6;
+            float angle2 = -0.7;
+            float angle3 = 1.2;
+
+            float freq1 = 2.4;
+            float freq2 = 3.2;
+            float freq3 = 4.0;
+
+            vec2 warpedUv = uv;
+
+            float scrollDeform = scroll * 5.0;
+
+            warpedUv.x += sin(uv.y * 2.5 + time * 0.2 + scrollDeform) * 0.35;
+            warpedUv.y += cos(uv.x * 2.5 - time * 0.15 - scrollDeform * 0.8) * 0.35;
+
+            warpedUv.x += sin(uv.y * 1.2 - time * 0.1 - scrollDeform * 1.5) * 0.25;
+            warpedUv.y += cos(uv.x * 1.2 + time * 0.18 + scrollDeform * 1.2) * 0.25;
+
+            vec2 scrollDrift = vec2(scroll * 0.04, -scroll * 0.02);
+            vec2 mouseShift = vec2(uMouse.x * aspect * 0.05, uMouse.y * 0.05);
+            warpedUv += scrollDrift + mouseShift;
+
+            vec2 dir1 = vec2(cos(angle1), sin(angle1));
+            vec2 dir2 = vec2(cos(angle2), sin(angle2));
+            vec2 dir3 = vec2(cos(angle3), sin(angle3));
+
+            float w1 = sin(dot(warpedUv, dir1) * freq1 + time * 1.0);
+            float w2 = cos(dot(warpedUv, dir2) * freq2 - time * 1.4 + w1 * 0.4);
+            float w3 = sin(dot(warpedUv, dir3) * freq3 + time * 1.8 + w2 * 0.5);
+
+            float waveField = w1 * 0.50 + w2 * 0.35 + w3 * 0.15;
+
+            float wideSheen = pow(max(0.0, 1.0 - abs(waveField - 0.1)), 2.5);
+            float crispSpecular = pow(max(0.0, 1.0 - abs(waveField - 0.15)), 8.0);
+            float crest = wideSheen * 0.5 + crispSpecular * 0.9;
+
+            // Top Palette (Scroll = 0.0): Golden Dubai Dawn
+            vec3 c0_shadow = vec3(0.0008, 0.0007, 0.0010);
+            vec3 c0_wave1  = vec3(0.075, 0.052, 0.020);
+            vec3 c0_wave2  = vec3(0.045, 0.030, 0.010);
+            vec3 c0_crest  = vec3(0.55, 0.42, 0.22);
+
+            // Bottom Palette (Scroll = 1.0): Deep Arabian Sapphire
+            vec3 c1_shadow = vec3(0.0004, 0.0007, 0.0014);
+            vec3 c1_wave1  = vec3(0.012, 0.040, 0.078);
+            vec3 c1_wave2  = vec3(0.006, 0.022, 0.050);
+            vec3 c1_crest  = vec3(0.16, 0.40, 0.62);
+
+            float t = smoothstep(0.0, 1.0, scroll);
+            vec3 colShadow = mix(c0_shadow, c1_shadow, t);
+            vec3 colWave1  = mix(c0_wave1, c1_wave1, t);
+            vec3 colWave2  = mix(c0_wave2, c1_wave2, t);
+            vec3 colCrest  = mix(c0_crest, c1_crest, t);
+
+            vec3 color = colShadow;
+            color = mix(color, colWave2, smoothstep(-0.6, 0.2, waveField));
+            color = mix(color, colWave1, smoothstep(0.0, 0.8, waveField));
+
+            color += colCrest * crest * 1.4;
+
+            float vignette = 1.0 - dot(uv, uv) * 0.12;
+            color *= vignette;
+
+            gl_FragColor = vec4(color, 1.0);
+        }
+    `;
+
+    bgMaterial = new THREE.ShaderMaterial({
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
+        uniforms: shaderUniforms,
+        depthWrite: false,
+        depthTest: false
+    });
+
+    const bgGeometry = new THREE.PlaneGeometry(30, 30);
+    const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
+    bgMesh.position.set(0.0, 0.0, -8.0);
+    bgMesh.renderOrder = -10;
+    camera.add(bgMesh);
+}
+
+function createMistTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 16; canvas.height = 16;
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.25, 'rgba(255, 255, 255, 0.85)');
+    gradient.addColorStop(0.6, 'rgba(255, 255, 255, 0.3)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 16, 16);
+    return new THREE.CanvasTexture(canvas);
+}
+
+function createMist() {
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(mistCount * 3);
+    const colors = new Float32Array(mistCount * 3);
+
+    for (let i = 0; i < mistCount; i++) {
+        const x = (Math.random() - 0.5) * 6.5;
+        const y = (Math.random() - 0.5) * 5.0 - 0.5;
+        const z = (Math.random() - 0.5) * 6.5;
+        positions[i * 3] = x;
+        positions[i * 3 + 1] = y;
+        positions[i * 3 + 2] = z;
+
+        if (Math.random() < 0.72) {
+            // pale ice-blue droplet
+            colors[i * 3] = 0.72 + Math.random() * 0.18;
+            colors[i * 3 + 1] = 0.88 + Math.random() * 0.10;
+            colors[i * 3 + 2] = 1.0;
+        } else {
+            // warm gold shimmer, sun on water
+            colors[i * 3] = 1.0;
+            colors[i * 3 + 1] = 0.80 + Math.random() * 0.14;
+            colors[i * 3 + 2] = 0.45 + Math.random() * 0.20;
+        }
+
+        mistData.push({
+            speedX: (Math.random() - 0.5) * 0.4,
+            speedY: 0.15 + Math.random() * 0.3,
+            speedZ: (Math.random() - 0.5) * 0.4,
+            swaySpeed: 0.5 + Math.random() * 1.5,
+            swayRadius: 0.05 + Math.random() * 0.15,
+            phase: Math.random() * Math.PI * 2
+        });
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+        size: 0.025,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        map: createMistTexture()
+    });
+
+    mistParticles = new THREE.Points(geometry, material);
+    scene.add(mistParticles);
+}
+
+/* ---- procedural Mai Dubai bottle: profile helpers ---- */
+
+function lerp2(a, b, t) { return a + (b - a) * t; }
+function smooth2(t) { return t * t * (3 - 2 * t); }
+function smoothstepJS(edge0, edge1, x) {
+    const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
+    return t * t * (3 - 2 * t);
+}
+
+// [y, radius] control pairs, bottom to top
+const BOTTLE_CONTROLS = [
+    [0.00, 0.00],
+    [0.04, 0.55],
+    [0.10, 0.92],
+    [0.18, 1.02],
+    [0.95, 1.02],   // base facet zone: 0.18 - 0.95
+    [1.12, 0.90],
+    [1.28, 0.88],
+    [4.28, 0.88],   // smooth label zone: 1.28 - 4.28
+    [4.45, 0.92],
+    [4.60, 1.00],
+    [5.30, 1.00],   // upper facet zone: 4.60 - 5.30
+    [5.48, 0.90],
+    [5.80, 0.72],
+    [6.15, 0.50],
+    [6.48, 0.34],
+    [6.62, 0.30],
+    [7.40, 0.30],   // neck
+    [7.50, 0.34],
+    [7.56, 0.32]
+];
+
+const CAP_CONTROLS = [
+    [7.56, 0.32],
+    [7.60, 0.40],
+    [7.62, 0.44],
+    [8.10, 0.44],
+    [8.20, 0.42],
+    [8.30, 0.34],
+    [8.36, 0.18],
+    [8.40, 0.00]
+];
+
+const LIQUID_CONTROLS = [
+    [0.12, 0.00],
+    [0.16, 0.45],
+    [0.22, 0.72],
+    [0.90, 0.80],
+    [1.15, 0.72],
+    [1.30, 0.70],
+    [4.25, 0.70],
+    [4.42, 0.74],
+    [4.58, 0.82],
+    [5.25, 0.82],
+    [5.42, 0.72],
+    [5.70, 0.55],
+    [5.92, 0.32],
+    [6.02, 0.00]
+];
+
+const BASE_FACET = [0.18, 0.95];
+const UPPER_FACET = [4.60, 5.30];
+const FACET_MARGIN = 0.12;
+
+function buildProfile(controls, stepY) {
+    const pts = [];
+    for (let i = 0; i < controls.length - 1; i++) {
+        const [y0, r0] = controls[i];
+        const [y1, r1] = controls[i + 1];
+        const span = y1 - y0;
+        const steps = Math.max(1, Math.round(span / stepY));
+        for (let s = 0; s < steps; s++) {
+            const t = s / steps;
+            const y = lerp2(y0, y1, t);
+            const r = lerp2(r0, r1, smooth2(t));
+            pts.push(new THREE.Vector2(Math.max(0.0002, r), y));
+        }
+    }
+    const last = controls[controls.length - 1];
+    pts.push(new THREE.Vector2(Math.max(0.0002, last[1]), last[0]));
+    return pts;
+}
+
+function facetWindow(y, lo, hi, margin) {
+    const a = smoothstepJS(lo - margin, lo, y);
+    const b = 1.0 - smoothstepJS(hi, hi + margin, y);
+    return Math.max(0, Math.min(a, b));
+}
+
+function applyDiamondFacets(geometry) {
+    const posAttr = geometry.attributes.position;
+    const arr = posAttr.array;
+    for (let i = 0; i < arr.length; i += 3) {
+        const x = arr[i], y = arr[i + 1], z = arr[i + 2];
+        const theta = Math.atan2(z, x);
+        const radius = Math.sqrt(x * x + z * z);
+        const w = Math.max(
+            facetWindow(y, BASE_FACET[0], BASE_FACET[1], FACET_MARGIN),
+            facetWindow(y, UPPER_FACET[0], UPPER_FACET[1], FACET_MARGIN)
+        );
+        if (w > 0.0001) {
+            const bump = Math.sin(theta * 20.0) * Math.sin(y * 14.0) * 0.045 * w;
+            const newR = Math.max(0.0002, radius + bump);
+            arr[i] = Math.cos(theta) * newR;
+            arr[i + 2] = Math.sin(theta) * newR;
+        }
+    }
+    posAttr.needsUpdate = true;
+    geometry.computeVertexNormals();
+}
+
+/* ---- procedural Mai Dubai bottle: label + materials + assembly ---- */
+
+function createLabelTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 640;
+    const ctx = canvas.getContext('2d');
+
+    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    grad.addColorStop(0, '#f4f8fb');
+    grad.addColorStop(0.53, '#e2edf5');
+    grad.addColorStop(0.56, '#0d3560');
+    grad.addColorStop(1, '#04162c');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#d9b26a';
+    ctx.fillRect(0, canvas.height * 0.55 - 2, canvas.width, 4);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#0a2e55';
+    ctx.font = 'italic 500 108px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText('Mai Dubai', canvas.width / 2, canvas.height * 0.32);
+
+    ctx.font = '600 20px "Outfit", sans-serif';
+    ctx.fillStyle = '#3c6b8f';
+    ctx.fillText('B O T T L E D   D R I N K I N G   W A T E R', canvas.width / 2, canvas.height * 0.32 + 46);
+
+    ctx.fillStyle = '#eaf6ff';
+    ctx.font = '600 40px "Outfit", sans-serif';
+    ctx.fillText('ALKALINE   pH 8+', canvas.width / 2, canvas.height * 0.72);
+    ctx.font = '400 22px "Outfit", sans-serif';
+    ctx.fillStyle = '#a9c9de';
+    ctx.fillText('Z E R O   S O D I U M', canvas.width / 2, canvas.height * 0.80);
+
+    ctx.fillStyle = 'rgba(217,178,106,0.9)';
+    const baseY = canvas.height * 0.965;
+    const buildings = [
+        [0.06, 0.05], [0.11, 0.09], [0.16, 0.06], [0.22, 0.12], [0.30, 0.07],
+        [0.47, 0.06], [0.55, 0.08], [0.63, 0.05], [0.70, 0.10], [0.78, 0.06],
+        [0.85, 0.08], [0.92, 0.05]
+    ];
+    buildings.forEach(([x, h]) => {
+        ctx.fillRect(canvas.width * x, baseY - canvas.height * h, canvas.width * 0.035, canvas.height * h);
+    });
+    // slender spire, nods to the city skyline
+    ctx.fillRect(canvas.width * 0.40, baseY - canvas.height * 0.19, canvas.width * 0.014, canvas.height * 0.19);
+    // sail-shaped landmark accent
+    ctx.beginPath();
+    ctx.moveTo(canvas.width * 0.34, baseY);
+    ctx.lineTo(canvas.width * 0.365, baseY - canvas.height * 0.20);
+    ctx.lineTo(canvas.width * 0.39, baseY);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(217,178,106,0.6)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 16;
+    return tex;
+}
+
+async function ensureFonts() {
+    if (!document.fonts) return;
+    try {
+        await Promise.all([
+            document.fonts.load('italic 500 108px "Cormorant Garamond"'),
+            document.fonts.load('600 40px "Outfit"'),
+            document.fonts.load('400 22px "Outfit"')
+        ]);
+        await document.fonts.ready;
+    } catch (e) { /* fall back to system fonts, non-fatal */ }
+}
+
+function buildBottle() {
+    bottleGroup = new THREE.Group();
+
+    // glass body — refracts the liquid-gold/sapphire scene behind it automatically
+    const glassGeometry = new THREE.LatheGeometry(buildProfile(BOTTLE_CONTROLS, 0.05), 96);
+    applyDiamondFacets(glassGeometry);
+    const glassMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xdcefff,
+        transmission: 0.94,
+        roughness: 0.06,
+        metalness: 0.0,
+        ior: 1.45,
+        thickness: 0.7,
+        attenuationColor: 0xbfe4ff,
+        attenuationDistance: 1.6,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.08
+    });
+    const glassBody = new THREE.Mesh(glassGeometry, glassMaterial);
+    glassBody.castShadow = true;
+    glassBody.receiveShadow = true;
+    bottleGroup.add(glassBody);
+
+    // liquid fill, sapphire water sitting inside the glass shell
+    const liquidGeometry = new THREE.LatheGeometry(buildProfile(LIQUID_CONTROLS, 0.08), 48);
+    const liquidMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0x2a6fc2,
+        transmission: 0.7,
+        roughness: 0.12,
+        metalness: 0.0,
+        ior: 1.33,
+        thickness: 1.0,
+        attenuationColor: 0x0a3d68,
+        attenuationDistance: 0.9
+    });
+    const liquid = new THREE.Mesh(liquidGeometry, liquidMaterial);
+    bottleGroup.add(liquid);
+
+    // cap — satin premium gold metal
+    const capGeometry = new THREE.LatheGeometry(buildProfile(CAP_CONTROLS, 0.06), 48);
+    const capMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xcdaa6d,
+        roughness: 0.42,
+        metalness: 0.92,
+        clearcoat: 0.5,
+        clearcoatRoughness: 0.2
+    });
+    const cap = new THREE.Mesh(capGeometry, capMaterial);
+    cap.castShadow = true;
+    cap.receiveShadow = true;
+    bottleGroup.add(cap);
+
+    // label band, wrapped around the smooth mid-body
+    const labelHeight = 4.28 - 1.28;
+    const labelGeometry = new THREE.CylinderGeometry(0.945, 0.945, labelHeight, 64, 1, true);
+    const labelMaterial = new THREE.MeshStandardMaterial({
+        map: createLabelTexture(),
+        roughness: 0.55,
+        metalness: 0.05
+    });
+    const label = new THREE.Mesh(labelGeometry, labelMaterial);
+    label.position.y = (1.28 + 4.28) / 2;
+    label.castShadow = true;
+    label.receiveShadow = true;
+    bottleGroup.add(label);
+
+    bottlePivot.add(bottleGroup);
+
+    // auto-scale so the largest dimension is 3.5, then recenter, exactly like the original rig
+    const boxInitial = new THREE.Box3().setFromObject(bottleGroup);
+    const sizeInitial = boxInitial.getSize(new THREE.Vector3());
+    const maxDim = Math.max(sizeInitial.x, sizeInitial.y, sizeInitial.z);
+    bottleTargetScale = 3.5 / (maxDim > 0.0001 ? maxDim : 1);
+
+    bottleGroup.scale.setScalar(bottleTargetScale);
+    bottleGroup.updateMatrixWorld(true);
+
+    const boxScaled = new THREE.Box3().setFromObject(bottleGroup);
+    const centerScaled = boxScaled.getCenter(new THREE.Vector3());
+    bottleGroup.position.sub(centerScaled);
+
+    bottlePivot.position.y = -0.4;
+
+    bottleGroup.scale.setScalar(0.0001);
+    bottleRevealStart = clock.getElapsedTime();
+}
+
+function splitTitlesIntoChars() {
+    const titles = document.querySelectorAll('.slide-title');
+    titles.forEach(title => {
+        const text = title.innerHTML;
+        let newHTML = '';
+        let delayCounter = 0;
+        const parts = text.split(/(<br\s*\/?>)/i);
+        parts.forEach(part => {
+            if (part.toLowerCase().startsWith('<br')) {
+                newHTML += part;
+            } else {
+                for (let i = 0; i < part.length; i++) {
+                    if (part[i] === ' ') {
+                        newHTML += ' ';
+                    } else {
+                        newHTML += `<span class="char" style="transition-delay: ${delayCounter * 0.035}s">${part[i]}</span>`;
+                        delayCounter++;
+                    }
+                }
+            }
+        });
+        title.innerHTML = newHTML;
+    });
+}
+
+window.addEventListener('mousemove', (event) => {
+    cursorX = event.clientX;
+    cursorY = event.clientY;
+    const cursorInner = document.querySelector('.cursor-inner');
+    if (cursorInner) { cursorInner.style.left = `${cursorX}px`; cursorInner.style.top = `${cursorY}px`; }
+    targetMouseX = (event.clientX / window.innerWidth) * 2 - 1;
+    targetMouseY = (event.clientY / window.innerHeight) * 2 - 1;
+});
+window.addEventListener('resize', onWindowResize);
+
+function updateGridDots(scroll) {
+    const dots = document.querySelectorAll('.grid-dot');
+    dots.forEach((dot, i) => {
+        const startY = (i * 17) % 80 + 10;
+        let speed = 90 + (i * 55) % 180;
+        if (i % 2 === 0) speed = -speed;
+        let y = startY + scroll * speed;
+        y = ((y % 100) + 100) % 100;
+        dot.style.top = `${y}%`;
+    });
+}
+
+function updateSlides(scroll) {
+    const slide1 = document.getElementById('slide-1');
+    const slide2 = document.getElementById('slide-2');
+    const slide3 = document.getElementById('slide-3');
+    const slide4 = document.getElementById('slide-4');
+
+    for (let i = 1; i <= 4; i++) {
+        const fill = document.getElementById(`dash-fill-${i}`);
+        if (fill) {
+            const start = (i - 1) * 0.25;
+            const end = i * 0.25;
+            let progress = (scroll - start) / (end - start);
+            progress = Math.max(0, Math.min(1, progress));
+            fill.style.height = `${progress * 100}%`;
+        }
+    }
+
+    function isActive(val, start, end) { return val >= start && val <= end; }
+
+    if (slide1) slide1.classList.toggle('active', isActive(scroll, -0.10, 0.12));
+    if (slide2) {
+        const active2 = isActive(scroll, 0.28, 0.40);
+        slide2.classList.toggle('active', active2);
+        const slide2Img = document.getElementById('slide-2-img');
+        if (slide2Img) slide2Img.classList.toggle('active', active2);
+    }
+    if (slide3) slide3.classList.toggle('active', isActive(scroll, 0.56, 0.68));
+    if (slide4) slide4.classList.toggle('active', isActive(scroll, 0.84, 1.05));
+}
+
+function setupNavigation() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const targetScrolls = [0.0, 0.34, 0.62, 0.94];
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const targetY = maxScroll * targetScrolls[index];
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+        });
+    });
+}
+
+function setEditorialImage() {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#3a2a10"/>
+<stop offset="45%" stop-color="#4a3312"/>
+<stop offset="100%" stop-color="#03101c"/>
+</linearGradient>
+<linearGradient id="bottleGrad" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#eaf6ff" stop-opacity="0.04"/>
+<stop offset="45%" stop-color="#eaf6ff" stop-opacity="0.32"/>
+<stop offset="55%" stop-color="#eaf6ff" stop-opacity="0.14"/>
+<stop offset="100%" stop-color="#eaf6ff" stop-opacity="0.04"/>
+</linearGradient>
+<radialGradient id="glow" cx="50%" cy="36%" r="45%">
+<stop offset="0%" stop-color="#ffe3ad" stop-opacity="0.55"/>
+<stop offset="100%" stop-color="#ffe3ad" stop-opacity="0"/>
+</radialGradient>
+</defs>
+<rect width="800" height="800" fill="url(#bg)"/>
+<rect width="800" height="800" fill="url(#glow)"/>
+<g fill="#0a2e55" opacity="0.55">
+<rect x="60" y="700" width="26" height="60"/><rect x="100" y="670" width="26" height="90"/>
+<rect x="140" y="690" width="26" height="70"/><rect x="600" y="680" width="26" height="80"/>
+<rect x="640" y="700" width="26" height="60"/><rect x="680" y="660" width="26" height="100"/>
+<rect x="720" y="690" width="26" height="70"/>
+</g>
+<path d="M340,120 C340,105 460,105 460,120 L468,300 C500,330 505,420 495,470 L480,590 C480,610 320,610 320,590 L305,470 C295,420 300,330 332,300 Z"
+fill="url(#bottleGrad)" stroke="#eaf6ff" stroke-opacity="0.45" stroke-width="2"/>
+<rect x="330" y="430" width="140" height="86" fill="#0a2e55" opacity="0.6"/>
+<text x="400" y="468" font-family="Georgia, serif" font-style="italic" font-size="30" fill="#f3dfb0" text-anchor="middle">Mai Dubai</text>
+<text x="400" y="492" font-family="Arial" font-size="10" letter-spacing="3" fill="#cfe3ee" text-anchor="middle" opacity="0.85">ALKALINE pH8+ ZERO SODIUM</text>
+<text x="400" y="750" font-family="Georgia, serif" font-size="15" letter-spacing="6" fill="#cfe3ee" text-anchor="middle" opacity="0.65">WATER AND LIGHT</text>
+<circle cx="230" cy="220" r="4" fill="#8ecfff" opacity="0.6"/>
+<circle cx="560" cy="260" r="3" fill="#f6e2b3" opacity="0.6"/>
+<circle cx="250" cy="520" r="3" fill="#8ecfff" opacity="0.5"/>
+<circle cx="555" cy="560" r="4" fill="#f6e2b3" opacity="0.5"/>
+</svg>`;
+    const img = document.getElementById('editorial-img');
+    if (img) img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    const deltaTime = clock.getDelta();
+
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollTop = window.scrollY !== undefined ? window.scrollY
+        : (window.pageYOffset !== undefined ? window.pageYOffset : document.documentElement.scrollTop);
+    const targetScroll = maxScroll > 0 ? scrollTop / maxScroll : 0;
+
+    currentScroll += (targetScroll - currentScroll) * 0.025;
+
+    mouseX += (targetMouseX - mouseX) * 0.05;
+    mouseY += (targetMouseY - mouseY) * 0.05;
+
+    outerCursorX += (cursorX - outerCursorX) * 0.2;
+    outerCursorY += (cursorY - outerCursorY) * 0.2;
+    const cursorOuter = document.querySelector('.cursor-outer');
+    if (cursorOuter) { cursorOuter.style.left = `${outerCursorX}px`; cursorOuter.style.top = `${outerCursorY}px`; }
+
+    if (bottlePivot) {
+        bottlePivot.rotation.y = mouseX * 0.25;
+        bottlePivot.rotation.x = mouseY * 0.15;
+    }
+
+    if (bottleGroup && bottleRevealStart !== null) {
+        const revealT = Math.min(1, (clock.getElapsedTime() - bottleRevealStart) / 1.3);
+        const eased = 1 - Math.pow(1 - revealT, 3);
+        bottleGroup.scale.setScalar(Math.max(0.0001, bottleTargetScale * eased));
+    }
+
+    if (mistParticles) {
+        const positions = mistParticles.geometry.attributes.position.array;
+        const time = clock.getElapsedTime();
+        const scrollVelocity = Math.abs(targetScroll - currentScroll);
+        const speedMultiplier = 1.0 + scrollVelocity * 9.0;
+        const turbulence = scrollVelocity * 0.8;
+
+        for (let i = 0; i < mistCount; i++) {
+            const idx = i * 3;
+            const data = mistData[i];
+            positions[idx]     += data.speedX * deltaTime * speedMultiplier;
+            positions[idx + 1] += data.speedY * deltaTime * speedMultiplier;
+            positions[idx + 2] += data.speedZ * deltaTime * speedMultiplier;
+
+            const currentSway = data.swayRadius * (1.0 + turbulence * 4.0);
+            positions[idx]     += Math.sin(time * data.swaySpeed + data.phase) * currentSway * deltaTime;
+            positions[idx + 2] += Math.cos(time * data.swaySpeed + data.phase) * currentSway * deltaTime;
+
+            if (positions[idx + 1] > 3.0 || Math.abs(positions[idx]) > 3.5 || Math.abs(positions[idx + 2]) > 3.5) {
+                positions[idx + 1] = -2.5;
+                positions[idx]     = (Math.random() - 0.5) * 3.0;
+                positions[idx + 2] = (Math.random() - 0.5) * 3.0;
+            }
+        }
+        mistParticles.geometry.attributes.position.needsUpdate = true;
+    }
+
+    const phi = currentScroll * Math.PI * 2.0;
+    const y = 0.35 + Math.sin(currentScroll * Math.PI) * 0.8;
+    const radius = 4.2 - Math.sin(currentScroll * Math.PI) * 0.6;
+    const x = radius * Math.sin(phi);
+    const z = radius * Math.cos(phi);
+
+    let transitionProgress = Math.min(1.0, currentScroll / 0.28);
+    let easeFactor = (Math.cos(transitionProgress * Math.PI) + 1.0) * 0.5;
+    const lookAtXOffset = -0.9 * easeFactor;
+    const targetLookAt = new THREE.Vector3(lookAtXOffset, -0.15, 0);
+    const targetPos = new THREE.Vector3(x, y, z);
+    camera.position.lerp(targetPos, 0.025);
+    camera.lookAt(targetLookAt);
+
+    if (shaderUniforms) {
+        shaderUniforms.uTime.value = clock.getElapsedTime();
+        shaderUniforms.uMouse.value.set(mouseX, -mouseY);
+        shaderUniforms.uScroll.value = currentScroll;
+    }
+
+    updateSlides(currentScroll);
+    updateGridDots(currentScroll);
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    splitTitlesIntoChars();
+    setEditorialImage();
+    initScene();
+    createMist();
+    ensureFonts().then(buildBottle);
+    onWindowResize();
+    animate();
+    setupNavigation();
+});
+</script>
+</body>
+</html>
