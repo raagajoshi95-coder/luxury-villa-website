@@ -15,9 +15,6 @@
     --ink:#eef7ff;
     --body-text:#c9dce8;
     --mute:#8fb0c4;
-    --gold:#d9b26a;
-    --gold-pale:#f6e2b3;
-    --gold-deep:#8a6a34;
     --accent:#4caf6e;
     --accent-pale:#bdeccb;
     --accent-deep:#1c5e39;
@@ -173,7 +170,7 @@ body {
     clip-path: inset(0 0 100% 0);
     transition: clip-path 1.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
     opacity: 0;
-    border: 1px solid rgba(217, 178, 106, 0.25);
+    border: 1px solid rgba(120, 210, 155, 0.25);
 }
 #slide-2-img img {
     width: 100%; height: 100%;
@@ -309,8 +306,8 @@ body {
   </div>
 
   <div class="slide" id="slide-3">
-    <h2 class="slide-title">Liquid Gold</h2>
-    <p class="slide-desc">Light moves like water through glass — every current tracing the dunes at dawn and the deep sapphire of the Arabian Gulf at dusk.</p>
+    <h2 class="slide-title">Liquid Emerald</h2>
+    <p class="slide-desc">Light moves like water through glass — every current tracing the palm oasis at first light and the deep emerald of the Gulf at dusk.</p>
   </div>
 
   <div class="slide" id="slide-4">
@@ -346,13 +343,15 @@ body {
 <script type="importmap">
 {
   "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/examples/jsm/environments/RoomEnvironment.js": "https://unpkg.com/three@0.160.0/examples/jsm/environments/RoomEnvironment.js"
   }
 }
 </script>
 <script type="module">
 /* ==================== MAI DUBAI — WATER AND LIGHT ==================== */
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
 const canvas = document.querySelector('#webgl');
 let scene, camera, renderer;
@@ -384,8 +383,8 @@ const sizes = { width: window.innerWidth, height: window.innerHeight };
 
 function initScene() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color('#04070c');
-    scene.fog = new THREE.FogExp2('#03060b', 0.01);
+    scene.background = new THREE.Color('#030704');
+    scene.fog = new THREE.FogExp2('#020503', 0.01);
 
     camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height, 0.1, 100);
     camera.position.set(0, 0.2, 3.0);
@@ -408,6 +407,13 @@ function initScene() {
     renderer.toneMappingExposure = 2.2;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+    // studio image-based lighting: gives the plastic cap, water, and PET
+    // glass real softbox-style reflections, the core of the "product photo"
+    // look that point lights alone can't produce
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmremGenerator.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+    pmremGenerator.dispose();
+
     createLighting();
 
     bottlePivot = new THREE.Group();
@@ -415,11 +421,11 @@ function initScene() {
 }
 
 function createLighting() {
-    const ambientLight = new THREE.AmbientLight('#dff2ff', 0.1);
+    const ambientLight = new THREE.AmbientLight('#ffffff', 0.1);
     scene.add(ambientLight);
 
-    // Key light: warm Dubai-sun gold-white from upper-right, casts shadows
-    const keyLight = new THREE.SpotLight('#fff2d9', 18.0);
+    // Key light: neutral studio white from upper-right, casts shadows
+    const keyLight = new THREE.SpotLight('#ffffff', 10.0);
     keyLight.position.set(4, 6, 3);
     keyLight.angle = Math.PI / 4;
     keyLight.penumbra = 0.9;
@@ -432,12 +438,12 @@ function createLighting() {
     scene.add(keyLight);
 
     // Rim light: emerald-mint from behind-left, defines the silhouette
-    const rimLight = new THREE.DirectionalLight('#7fe6b0', 10.0);
+    const rimLight = new THREE.DirectionalLight('#7fe6b0', 8.0);
     rimLight.position.set(-5, 3, -4);
     scene.add(rimLight);
 
-    // Fill light: faint warm gold from below-front
-    const fillLight = new THREE.DirectionalLight('#ffe9c2', 0.8);
+    // Fill light: faint neutral bounce from below-front
+    const fillLight = new THREE.DirectionalLight('#eef3f1', 0.8);
     fillLight.position.set(-2, -4, 2);
     scene.add(fillLight);
 }
@@ -523,17 +529,17 @@ function createBackgroundShader() {
             float crispSpecular = pow(max(0.0, 1.0 - abs(waveField - 0.15)), 8.0);
             float crest = wideSheen * 0.5 + crispSpecular * 0.9;
 
-            // Top Palette (Scroll = 0.0): Golden Dubai Dawn
-            vec3 c0_shadow = vec3(0.0008, 0.0007, 0.0010);
-            vec3 c0_wave1  = vec3(0.075, 0.052, 0.020);
-            vec3 c0_wave2  = vec3(0.045, 0.030, 0.010);
-            vec3 c0_crest  = vec3(0.55, 0.42, 0.22);
+            // Top Palette (Scroll = 0.0): Fresh Spring Green
+            vec3 c0_shadow = vec3(0.0006, 0.0011, 0.0008);
+            vec3 c0_wave1  = vec3(0.030, 0.080, 0.046);
+            vec3 c0_wave2  = vec3(0.016, 0.050, 0.027);
+            vec3 c0_crest  = vec3(0.22, 0.48, 0.30);
 
             // Bottom Palette (Scroll = 1.0): Deep Emerald Oasis
-            vec3 c1_shadow = vec3(0.0005, 0.0011, 0.0007);
-            vec3 c1_wave1  = vec3(0.014, 0.072, 0.036);
-            vec3 c1_wave2  = vec3(0.007, 0.046, 0.021);
-            vec3 c1_crest  = vec3(0.22, 0.62, 0.34);
+            vec3 c1_shadow = vec3(0.0004, 0.0009, 0.0006);
+            vec3 c1_wave1  = vec3(0.010, 0.052, 0.026);
+            vec3 c1_wave2  = vec3(0.005, 0.030, 0.014);
+            vec3 c1_crest  = vec3(0.12, 0.38, 0.20);
 
             float t = smoothstep(0.0, 1.0, scroll);
             vec3 colShadow = mix(c0_shadow, c1_shadow, t);
@@ -602,10 +608,10 @@ function createMist() {
             colors[i * 3 + 1] = 0.95 + Math.random() * 0.05;
             colors[i * 3 + 2] = 0.78 + Math.random() * 0.16;
         } else {
-            // warm gold shimmer, sun on water
-            colors[i * 3] = 1.0;
-            colors[i * 3 + 1] = 0.80 + Math.random() * 0.14;
-            colors[i * 3 + 2] = 0.45 + Math.random() * 0.20;
+            // soft white glint, light on water
+            colors[i * 3] = 0.92 + Math.random() * 0.08;
+            colors[i * 3 + 1] = 0.94 + Math.random() * 0.06;
+            colors[i * 3 + 2] = 0.92 + Math.random() * 0.08;
         }
 
         mistData.push({
@@ -644,60 +650,83 @@ function smoothstepJS(edge0, edge1, x) {
     return t * t * (3 - 2 * t);
 }
 
-// ==== BOTTLE VARIANT: "Alkaline pH8+ / Zero Sodium" — green cap ====
-// Slender silhouette, diamond-cut facets run almost the full body in one
-// continuous band, compact/angular shoulder, long clear neck.
-// [y, radius] control pairs, bottom to top
+// ==== MAI DUBAI 330ml MOLD — measured against the reference photo ====
+// Both SKUs share one bottle mold; only cap colour and label art differ.
+// Front photo proportions: total height ≈ 3.05x body diameter; diamond-quilt
+// band above the base and another below the shoulder; smooth, slightly
+// recessed label zone between them (with thin ribs at its edges); rounded
+// shoulder into a short neck with a transfer bead; fluted screw cap.
+// [y, radius] control pairs, bottom to top; body radius = 1.0
 const BOTTLE_CONTROLS = [
     [0.00, 0.00],
-    [0.05, 0.58],
-    [0.12, 0.94],
-    [0.20, 1.00],
-    [4.35, 1.02],   // single facet run: 0.20 - 4.35
-    [4.60, 0.90],
-    [5.00, 0.60],   // compact, fairly angular shoulder
-    [5.35, 0.36],
-    [5.55, 0.305],
-    [6.85, 0.30],   // long clear neck
-    [6.95, 0.345],
-    [7.02, 0.32]
+    [0.05, 0.60],
+    [0.10, 0.96],
+    [0.15, 1.00],
+    [0.34, 1.00],
+    [1.16, 1.00],   // lower quilt band: 0.34 - 1.16
+    [1.30, 0.965],
+    [1.33, 0.985],  // thin rib below label
+    [1.38, 0.960],
+    [3.02, 0.960],  // smooth recessed label zone
+    [3.06, 0.985],  // thin rib above label
+    [3.10, 0.965],
+    [3.26, 1.00],
+    [4.08, 1.00],   // upper quilt band: 3.26 - 4.08
+    [4.20, 0.97],
+    [4.40, 0.80],   // long rounded shoulder
+    [4.56, 0.58],
+    [4.68, 0.42],
+    [4.76, 0.335],
+    [5.27, 0.31],   // short neck
+    [5.31, 0.355],  // transfer bead
+    [5.36, 0.36],
+    [5.40, 0.315]
 ];
 
 const CAP_CONTROLS = [
-    [7.02, 0.32],
-    [7.07, 0.42],
-    [7.10, 0.47],
-    [7.62, 0.47],   // ridged skirt zone: 7.10 - 7.62
-    [7.74, 0.44],
-    [7.86, 0.32],
-    [7.92, 0.15],
-    [7.96, 0.00]
+    [5.40, 0.315],
+    [5.44, 0.40],
+    [5.47, 0.425],
+    [5.56, 0.425],  // tamper-evident band
+    [5.575, 0.405], // groove between band and cap
+    [5.59, 0.43],
+    [5.93, 0.43],   // fluted skirt zone: 5.60 - 5.92
+    [5.99, 0.415],
+    [6.04, 0.36],
+    [6.08, 0.22],
+    [6.11, 0.00]
 ];
 
 const LIQUID_CONTROLS = [
-    [0.14, 0.00],
-    [0.18, 0.48],
-    [0.24, 0.74],
-    [1.00, 0.82],
-    [4.30, 0.84],
-    [4.55, 0.78],
-    [4.85, 0.58],
-    [5.02, 0.30],
-    [5.08, 0.00]
+    [0.10, 0.00],
+    [0.16, 0.55],
+    [0.24, 0.92],
+    [1.20, 0.92],
+    [1.40, 0.905],
+    [3.05, 0.905],
+    [3.30, 0.94],
+    [4.05, 0.94],
+    [4.25, 0.90],
+    [4.45, 0.72],
+    [4.60, 0.50],
+    [4.72, 0.30],
+    [4.80, 0.26],
+    [5.10, 0.26],   // filled up into the neck, air gap under the cap
+    [5.18, 0.00]
 ];
 
-const FACET_ZONES = [[0.20, 4.35]];
-const FACET_MARGIN = 0.15;
-const FACET_FREQ_THETA = 26;
-const FACET_FREQ_Y = 18;
-const FACET_AMP = 0.055;
+const FACET_ZONES = [[0.34, 1.16], [3.26, 4.08]];
+const FACET_MARGIN = 0.10;
+const FACET_FREQ_THETA = 16;   // 16 diamond columns around the bottle
+const FACET_FREQ_Y = 15;       // ~2 diamond rows per band
+const FACET_AMP = 0.05;
 
-const CAP_RIDGE_ZONE = [7.10, 7.62];
-const CAP_RIDGE_COUNT = 30;
-const CAP_RIDGE_AMP = 0.014;
+const CAP_RIDGE_ZONE = [5.60, 5.92];
+const CAP_RIDGE_COUNT = 44;    // fine flutes, per the photo
+const CAP_RIDGE_AMP = 0.007;
 
-const LABEL_Y_RANGE = [2.30, 4.30];
-const LABEL_RADIUS = 1.12;
+const LABEL_Y_RANGE = [1.40, 3.00];
+const LABEL_RADIUS = 0.975;
 
 function buildProfile(controls, stepY) {
     const pts = [];
@@ -788,72 +817,139 @@ function drawHeart(ctx, cx, cy, s, color) {
     ctx.fill();
 }
 
-function createLabelTexture() {
-    // "Alkaline pH8+ / Zero Sodium" — white upper zone, green lower zone,
-    // red cursive wordmark (constant brand mark on both SKUs)
-    const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 640;
-    const ctx = canvas.getContext('2d');
-
-    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    grad.addColorStop(0, '#f6faf7');
-    grad.addColorStop(0.42, '#eef6f0');
-    grad.addColorStop(0.46, '#2f8f52');
-    grad.addColorStop(1, '#0d3d24');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#d9b26a';
-    ctx.fillRect(0, canvas.height * 0.44 - 2, canvas.width, 4);
-
-    // top zone: small zero-sodium heart + "bottled drinking water"
-    drawHeart(ctx, canvas.width * 0.5 - 132, canvas.height * 0.10, 13, '#2f8f52');
-    ctx.textAlign = 'left';
-    ctx.font = '600 16px "Outfit", sans-serif';
-    ctx.fillStyle = '#3c6b52';
-    ctx.fillText('ZERO SODIUM', canvas.width * 0.5 - 108, canvas.height * 0.105);
-
-    ctx.textAlign = 'center';
-    ctx.font = '600 18px "Outfit", sans-serif';
-    ctx.fillStyle = '#4a6b58';
-    ctx.fillText('B O T T L E D   D R I N K I N G   W A T E R', canvas.width / 2, canvas.height * 0.17);
-
-    // red cursive wordmark, the one constant across every Mai Dubai SKU
-    ctx.fillStyle = '#c8372e';
-    ctx.font = 'italic 500 118px "Cormorant Garamond", Georgia, serif';
-    ctx.fillText('Mai Dubai', canvas.width / 2, canvas.height * 0.34);
-
-    // green zone: ALKALINE pH8+ ZERO SODIUM
-    ctx.fillStyle = '#eefaf1';
-    ctx.font = '600 42px "Outfit", sans-serif';
-    ctx.fillText('ALKALINE   pH 8+', canvas.width / 2, canvas.height * 0.72);
-    ctx.font = '400 22px "Outfit", sans-serif';
-    ctx.fillStyle = '#bfe3cc';
-    ctx.fillText('Z E R O   S O D I U M', canvas.width / 2, canvas.height * 0.80);
-
-    // gold skyline silhouette along the base
-    ctx.fillStyle = 'rgba(217,178,106,0.9)';
-    const baseY = canvas.height * 0.965;
-    const buildings = [
-        [0.06, 0.05], [0.11, 0.09], [0.16, 0.06], [0.22, 0.12], [0.30, 0.07],
-        [0.47, 0.06], [0.55, 0.08], [0.63, 0.05], [0.70, 0.10], [0.78, 0.06],
-        [0.85, 0.08], [0.92, 0.05]
+// Dubai skyline silhouette: Burj Al Arab sail, Burj Khalifa spire, mosque
+// domes, Dubai Frame — the landmark set printed on the real label
+function drawSkyline(ctx, x0, baseY, w, hMax, color) {
+    ctx.fillStyle = color;
+    const b = [
+        [0.02, 0.30], [0.06, 0.55], [0.10, 0.40], [0.20, 0.45], [0.27, 0.35],
+        [0.33, 0.60], [0.40, 0.42], [0.48, 0.38], [0.55, 0.65], [0.62, 0.45],
+        [0.70, 0.55], [0.75, 0.40], [0.90, 0.62], [0.95, 0.35]
     ];
-    buildings.forEach(([x, h]) => {
-        ctx.fillRect(canvas.width * x, baseY - canvas.height * h, canvas.width * 0.035, canvas.height * h);
-    });
-    ctx.fillRect(canvas.width * 0.40, baseY - canvas.height * 0.19, canvas.width * 0.014, canvas.height * 0.19);
+    b.forEach(([fx, fh]) => ctx.fillRect(x0 + w * fx, baseY - hMax * fh, w * 0.022, hMax * fh));
+    // Burj Khalifa: tall centre spire on a stepped tower
+    ctx.fillRect(x0 + w * 0.443, baseY - hMax, w * 0.008, hMax);
+    ctx.fillRect(x0 + w * 0.432, baseY - hMax * 0.72, w * 0.03, hMax * 0.72);
+    ctx.fillRect(x0 + w * 0.421, baseY - hMax * 0.45, w * 0.052, hMax * 0.45);
+    // Burj Al Arab sail
     ctx.beginPath();
-    ctx.moveTo(canvas.width * 0.34, baseY);
-    ctx.lineTo(canvas.width * 0.365, baseY - canvas.height * 0.20);
-    ctx.lineTo(canvas.width * 0.39, baseY);
+    ctx.moveTo(x0 + w * 0.125, baseY);
+    ctx.quadraticCurveTo(x0 + w * 0.128, baseY - hMax * 0.92, x0 + w * 0.152, baseY - hMax * 0.88);
+    ctx.lineTo(x0 + w * 0.158, baseY);
     ctx.closePath();
     ctx.fill();
+    // Dubai Frame: two pillars and a top beam
+    ctx.fillRect(x0 + w * 0.80, baseY - hMax * 0.85, w * 0.007, hMax * 0.85);
+    ctx.fillRect(x0 + w * 0.856, baseY - hMax * 0.85, w * 0.007, hMax * 0.85);
+    ctx.fillRect(x0 + w * 0.80, baseY - hMax * 0.85, w * 0.063, hMax * 0.07);
+    // mosque domes
+    ctx.beginPath(); ctx.arc(x0 + w * 0.30, baseY, hMax * 0.22, Math.PI, 0); ctx.fill();
+    ctx.beginPath(); ctx.arc(x0 + w * 0.66, baseY, hMax * 0.18, Math.PI, 0); ctx.fill();
+}
 
-    ctx.strokeStyle = 'rgba(217,178,106,0.6)';
-    ctx.lineWidth = 3;
-    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+function createLabelTexture() {
+    // "ALKALINE ZERO SODIUM pH8+" label, matched to the reference photo:
+    // white upper two-thirds, green gradient base carrying a darker green
+    // skyline; red cursive wordmark. Canvas aspect ≈ the label's real
+    // wrap ratio (circumference : height) so type isn't distorted.
+    const canvas = document.createElement('canvas');
+    canvas.width = 2048;
+    canvas.height = 544;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(0.50, '#f4faf6');
+    grad.addColorStop(0.68, '#cdeeda');
+    grad.addColorStop(0.84, '#58b877');
+    grad.addColorStop(1, '#1e7c43');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // ---- front panel (centred on u=0.5, the face the camera sees) ----
+    // zero-sodium heart with caption, left of the drinking-water lines
+    drawHeart(ctx, W * 0.405, H * 0.135, 20, '#2e9e4f');
+    ctx.textAlign = 'center';
+    ctx.font = '600 15px "Outfit", sans-serif';
+    ctx.fillStyle = '#2e9e4f';
+    ctx.fillText('ZERO', W * 0.405, H * 0.20);
+    ctx.fillText('SODIUM', W * 0.405, H * 0.235);
+
+    ctx.textAlign = 'left';
+    ctx.font = '300 30px "Outfit", sans-serif';
+    ctx.fillStyle = '#3f4a44';
+    ctx.fillText('bottled', W * 0.435, H * 0.115);
+    ctx.fillText('drinking', W * 0.435, H * 0.175);
+    ctx.fillText('water', W * 0.435, H * 0.235);
+
+    // red cursive wordmark with trademark tick
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#c8372e';
+    ctx.font = 'italic 500 130px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText('Mai Dubai', W * 0.5, H * 0.475);
+    const wmWidth = ctx.measureText('Mai Dubai').width;
+    ctx.font = '600 22px "Outfit", sans-serif';
+    ctx.fillText('TM', W * 0.5 + wmWidth / 2 + 20, H * 0.33);
+
+    // ALKALINE — heavy green italic (skewed, Outfit has no italic cut)
+    ctx.save();
+    ctx.translate(W * 0.5, H * 0.62);
+    ctx.transform(1, 0, -0.18, 1, 0, 0);
+    ctx.font = '600 62px "Outfit", sans-serif';
+    ctx.fillStyle = '#2e9e4f';
+    ctx.fillText('ALKALINE', 0, 0);
+    ctx.restore();
+
+    // ZERO SODIUM (navy) + pH8+ (green), one line
+    ctx.save();
+    ctx.translate(W * 0.5, H * 0.70);
+    ctx.transform(1, 0, -0.15, 1, 0, 0);
+    ctx.textAlign = 'right';
+    ctx.font = '600 30px "Outfit", sans-serif';
+    ctx.fillStyle = '#1d3a8f';
+    ctx.fillText('ZERO SODIUM', 26, 0);
+    ctx.textAlign = 'left';
+    ctx.font = '600 34px "Outfit", sans-serif';
+    ctx.fillStyle = '#2e9e4f';
+    ctx.fillText('pH8+', 44, 0);
+    ctx.restore();
+
+    // volume statement
+    ctx.textAlign = 'left';
+    ctx.font = '400 30px "Outfit", sans-serif';
+    ctx.fillStyle = '#3f4a44';
+    ctx.fillText('330 ml', W * 0.40, H * 0.80);
+
+    // darker green skyline across the base of the label, wrapping around
+    drawSkyline(ctx, 0, H * 0.97, W * 0.5, H * 0.20, '#0d5a30');
+    drawSkyline(ctx, W * 0.5, H * 0.97, W * 0.5, H * 0.20, '#0d5a30');
+
+    // ---- back panel (seen mid-orbit): composition table + barcode ----
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#c8372e';
+    ctx.font = 'italic 500 40px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText('Mai Dubai', W * 0.08, H * 0.17);
+    ctx.font = '600 15px "Outfit", sans-serif';
+    ctx.fillStyle = '#4a5a52';
+    ctx.fillText('COMPOSITION  mg/L', W * 0.08, H * 0.25);
+    ctx.fillRect(W * 0.08, H * 0.275, W * 0.13, 2);
+    const rows = [['Calcium', '20'], ['Magnesium', '10'], ['Sodium', '0'], ['Bicarbonate', '35'], ['Chloride', '40'], ['pH', '8+']];
+    ctx.font = '400 15px "Outfit", sans-serif';
+    rows.forEach((r, i) => {
+        const ry = H * (0.32 + i * 0.055);
+        ctx.fillStyle = '#4a5a52';
+        ctx.fillText(r[0], W * 0.08, ry);
+        ctx.textAlign = 'right';
+        ctx.fillText(r[1], W * 0.21, ry);
+        ctx.textAlign = 'left';
+    });
+    // back barcode
+    ctx.fillStyle = 'rgba(35,42,38,0.85)';
+    for (let i = 0; i < 26; i++) {
+        const bw = (i % 3 === 0) ? 4 : 2;
+        ctx.fillRect(W * 0.84 + i * 5, H * 0.30, bw, H * 0.22);
+    }
 
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
@@ -865,10 +961,11 @@ async function ensureFonts() {
     if (!document.fonts) return;
     try {
         await Promise.all([
-            document.fonts.load('italic 500 118px "Cormorant Garamond"'),
-            document.fonts.load('600 42px "Outfit"'),
-            document.fonts.load('600 18px "Outfit"'),
-            document.fonts.load('400 22px "Outfit"')
+            document.fonts.load('italic 500 130px "Cormorant Garamond"'),
+            document.fonts.load('600 62px "Outfit"'),
+            document.fonts.load('600 30px "Outfit"'),
+            document.fonts.load('300 30px "Outfit"'),
+            document.fonts.load('400 30px "Outfit"')
         ]);
         await document.fonts.ready;
     } catch (e) { /* fall back to system fonts, non-fatal */ }
@@ -877,66 +974,75 @@ async function ensureFonts() {
 function buildBottle() {
     bottleGroup = new THREE.Group();
 
-    // glass body — dense diamond-cut facets, refracts the liquid-gold/emerald
-    // scene behind it automatically via transmission. Doesn't cast a shadow:
-    // a clear PET shell shouldn't throw a hard opaque shadow (more physically
-    // plausible), and it halves the transmission render passes per frame.
-    const glassGeometry = new THREE.LatheGeometry(buildProfile(BOTTLE_CONTROLS, 0.035), 110);
+    // glass body — clear PET with the quilted diamond bands carved in.
+    // Transmission refracts the scene behind it; the env map supplies the
+    // studio-softbox reflections. No cast shadow (thin clear plastic), which
+    // also keeps it to one transmission render pass per frame.
+    const glassGeometry = new THREE.LatheGeometry(buildProfile(BOTTLE_CONTROLS, 0.03), 128);
     applyDiamondFacets(glassGeometry, FACET_ZONES, FACET_MARGIN, FACET_FREQ_THETA, FACET_FREQ_Y, FACET_AMP);
     const glassMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0xdcefff,
-        transmission: 0.94,
-        roughness: 0.055,
+        color: 0xffffff,
+        transmission: 0.95,
+        roughness: 0.025,
         metalness: 0.0,
         ior: 1.45,
-        thickness: 0.7,
-        attenuationColor: 0xbfe4ff,
-        attenuationDistance: 1.6,
+        thickness: 0.35,
+        attenuationColor: 0xeff8fb,
+        attenuationDistance: 3.0,
         clearcoat: 1.0,
-        clearcoatRoughness: 0.08
+        clearcoatRoughness: 0.06,
+        envMapIntensity: 0.7
     });
     const glassBody = new THREE.Mesh(glassGeometry, glassMaterial);
     glassBody.castShadow = false;
     glassBody.receiveShadow = true;
     bottleGroup.add(glassBody);
 
-    // liquid fill — plain transparency instead of transmission (cheap: no
-    // second render-to-texture pass), tinted for a pale mineral-green glow
-    const liquidGeometry = new THREE.LatheGeometry(buildProfile(LIQUID_CONTROLS, 0.07), 56);
+    // water — colourless like the photo (bottled water has no tint), filled
+    // to the neck; plain transparency, no second transmission pass
+    const liquidGeometry = new THREE.LatheGeometry(buildProfile(LIQUID_CONTROLS, 0.06), 64);
     const liquidMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0x8fd6b0,
+        color: 0xeaf4f6,
         transparent: true,
-        opacity: 0.55,
-        roughness: 0.15,
+        opacity: 0.18,
+        roughness: 0.05,
         metalness: 0.0,
-        clearcoat: 0.3,
-        clearcoatRoughness: 0.2
+        clearcoat: 0.2,
+        clearcoatRoughness: 0.08,
+        envMapIntensity: 0.3
     });
     const liquid = new THREE.Mesh(liquidGeometry, liquidMaterial);
     bottleGroup.add(liquid);
 
-    // cap — satin metallized-plastic green, with a ridged grip skirt
-    const capGeometry = new THREE.LatheGeometry(buildProfile(CAP_CONTROLS, 0.045), 56);
-    applyCapRidges(capGeometry, CAP_RIDGE_ZONE[0], CAP_RIDGE_ZONE[1], FACET_MARGIN * 0.4, CAP_RIDGE_COUNT, CAP_RIDGE_AMP);
+    // cap — opaque green polypropylene (plastic, not metal), fine flutes,
+    // tamper band included in the profile
+    const capGeometry = new THREE.LatheGeometry(buildProfile(CAP_CONTROLS, 0.03), 96);
+    applyCapRidges(capGeometry, CAP_RIDGE_ZONE[0], CAP_RIDGE_ZONE[1], 0.04, CAP_RIDGE_COUNT, CAP_RIDGE_AMP);
     const capMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0x2f8f52,
-        roughness: 0.34,
-        metalness: 0.7,
-        clearcoat: 0.6,
-        clearcoatRoughness: 0.18
+        color: 0x1d7c39,
+        roughness: 0.32,
+        metalness: 0.0,
+        clearcoat: 0.55,
+        clearcoatRoughness: 0.25,
+        envMapIntensity: 0.6
     });
     const cap = new THREE.Mesh(capGeometry, capMaterial);
     cap.castShadow = true;
     cap.receiveShadow = true;
     bottleGroup.add(cap);
 
-    // label band, wrapped over the faceted body just below the shoulder
+    // wrap label film in the recessed zone between the quilt bands
     const labelHeight = LABEL_Y_RANGE[1] - LABEL_Y_RANGE[0];
-    const labelGeometry = new THREE.CylinderGeometry(LABEL_RADIUS, LABEL_RADIUS, labelHeight, 72, 1, true);
-    const labelMaterial = new THREE.MeshStandardMaterial({
+    // thetaStart = PI puts texture u=0.5 (the artwork's front panel) on +z,
+    // facing the camera at scroll 0 — the default seam sits at +z otherwise
+    const labelGeometry = new THREE.CylinderGeometry(LABEL_RADIUS, LABEL_RADIUS, labelHeight, 96, 1, true, Math.PI);
+    const labelMaterial = new THREE.MeshPhysicalMaterial({
         map: createLabelTexture(),
-        roughness: 0.5,
-        metalness: 0.05
+        roughness: 0.42,
+        metalness: 0.0,
+        clearcoat: 0.35,
+        clearcoatRoughness: 0.3,
+        envMapIntensity: 0.5
     });
     const label = new THREE.Mesh(labelGeometry, labelMaterial);
     label.position.y = (LABEL_Y_RANGE[0] + LABEL_Y_RANGE[1]) / 2;
@@ -946,11 +1052,11 @@ function buildBottle() {
 
     bottlePivot.add(bottleGroup);
 
-    // auto-scale so the largest dimension is 3.5, then recenter, exactly like the original rig
+    // auto-scale so the largest dimension is 3.2, then recenter about the pivot
     const boxInitial = new THREE.Box3().setFromObject(bottleGroup);
     const sizeInitial = boxInitial.getSize(new THREE.Vector3());
     const maxDim = Math.max(sizeInitial.x, sizeInitial.y, sizeInitial.z);
-    bottleTargetScale = 3.5 / (maxDim > 0.0001 ? maxDim : 1);
+    bottleTargetScale = 3.2 / (maxDim > 0.0001 ? maxDim : 1);
 
     bottleGroup.scale.setScalar(bottleTargetScale);
     bottleGroup.updateMatrixWorld(true);
@@ -959,7 +1065,7 @@ function buildBottle() {
     const centerScaled = boxScaled.getCenter(new THREE.Vector3());
     bottleGroup.position.sub(centerScaled);
 
-    bottlePivot.position.y = -0.4;
+    bottlePivot.position.y = -0.25;
 
     bottleGroup.scale.setScalar(0.0001);
     bottleRevealStart = clock.getElapsedTime();
@@ -1059,9 +1165,9 @@ function setEditorialImage() {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
 <defs>
 <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0%" stop-color="#3a2a10"/>
-<stop offset="45%" stop-color="#2c4a2f"/>
-<stop offset="100%" stop-color="#03140b"/>
+<stop offset="0%" stop-color="#16472a"/>
+<stop offset="45%" stop-color="#1d5c36"/>
+<stop offset="100%" stop-color="#02120a"/>
 </linearGradient>
 <linearGradient id="bottleGrad" x1="0" y1="0" x2="1" y2="0">
 <stop offset="0%" stop-color="#eaf6ff" stop-opacity="0.04"/>
@@ -1070,8 +1176,8 @@ function setEditorialImage() {
 <stop offset="100%" stop-color="#eaf6ff" stop-opacity="0.04"/>
 </linearGradient>
 <radialGradient id="glow" cx="50%" cy="36%" r="45%">
-<stop offset="0%" stop-color="#ffe3ad" stop-opacity="0.55"/>
-<stop offset="100%" stop-color="#ffe3ad" stop-opacity="0"/>
+<stop offset="0%" stop-color="#bff5d2" stop-opacity="0.5"/>
+<stop offset="100%" stop-color="#bff5d2" stop-opacity="0"/>
 </radialGradient>
 </defs>
 <rect width="800" height="800" fill="url(#bg)"/>
@@ -1089,9 +1195,9 @@ fill="url(#bottleGrad)" stroke="#eaf6ff" stroke-opacity="0.45" stroke-width="2"/
 <text x="400" y="492" font-family="Arial" font-size="10" letter-spacing="3" fill="#cfe3ee" text-anchor="middle" opacity="0.85">ALKALINE pH8+ ZERO SODIUM</text>
 <text x="400" y="750" font-family="Georgia, serif" font-size="15" letter-spacing="6" fill="#cfe3ee" text-anchor="middle" opacity="0.65">WATER AND LIGHT</text>
 <circle cx="230" cy="220" r="4" fill="#8ef0b8" opacity="0.6"/>
-<circle cx="560" cy="260" r="3" fill="#f6e2b3" opacity="0.6"/>
+<circle cx="560" cy="260" r="3" fill="#eafff0" opacity="0.6"/>
 <circle cx="250" cy="520" r="3" fill="#8ef0b8" opacity="0.5"/>
-<circle cx="555" cy="560" r="4" fill="#f6e2b3" opacity="0.5"/>
+<circle cx="555" cy="560" r="4" fill="#eafff0" opacity="0.5"/>
 </svg>`;
     const img = document.getElementById('editorial-img');
     if (img) img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
