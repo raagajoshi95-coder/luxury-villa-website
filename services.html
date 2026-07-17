@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B1425">
+<meta name="description" content="What arroWebs does — Custom Software, Mobile Applications, Integration Services and Search Engine Optimization, explained in full.">
+<title>What We Do — arroWebs</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 100'%3E%3Cpolygon points='84,2 140,2 111,56' fill='%2355B87B'/%3E%3Ccircle cx='14' cy='85' r='13' fill='%234A7CBF'/%3E%3Cpolygon points='31,98 46,98 71,44 56,44' fill='%234A7CBF'/%3E%3Cpolygon points='48,98 63,98 97,20 82,20' fill='%234A7CBF'/%3E%3Cpolygon points='65,98 80,98 122,2 107,2' fill='%234A7CBF'/%3E%3C/svg%3E">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+    --navy:#0B1425;
+    --navy-2:#16233C;
+    --navy-3:#24395B;
+    --blue:#4A7CBF;
+    --blue-soft:#7FA6D6;
+    --blue-pale:#DCE7F5;
+    --green:#55B87B;
+    --green-soft:#8FD4AB;
+    --green-pale:#DFF3E7;
+    --ink:#1E2A3B;
+    --body:#46566B;
+    --mute:#7C8CA1;
+    --paper:#F5F8FC;
+    --line:rgba(36,57,91,.12);
+    --shadow:0 30px 60px -25px rgba(11,20,37,.25);
+    --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{width:100%}
+body{
+    overflow-x:clip;
+    font-family:'Manrope',sans-serif;background:var(--paper);color:var(--body);
+    font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--green);color:#fff}
+h1,h2,h3,h4{font-family:'Sora',sans-serif;color:var(--ink);line-height:1.15;font-weight:700}
+a{text-decoration:none;color:inherit}
+img,svg{max-width:100%;display:block}
+
+/* cursor */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%)}
+.cursor-dot{width:8px;height:8px;background:var(--green);transition:width .25s,height .25s}
+.cursor-ring{width:38px;height:38px;border:1.5px solid rgba(74,124,191,.65);transition:width .3s var(--ease),height .3s var(--ease),border-color .3s,background .3s}
+body.cursor-hover .cursor-ring{width:64px;height:64px;border-color:var(--green);background:rgba(85,184,123,.08)}
+body.cursor-hover .cursor-dot{width:4px;height:4px}
+@media (hover:none),(pointer:coarse){.cursor-dot,.cursor-ring{display:none}}
+
+/* header */
+header{
+    position:fixed;top:0;left:0;right:0;z-index:800;
+    padding:22px clamp(20px,5vw,64px);
+    display:flex;align-items:center;justify-content:space-between;
+    transition:padding .4s,background .4s,box-shadow .4s;
+}
+header.scrolled{
+    padding:12px clamp(20px,5vw,64px);
+    background:rgba(245,248,252,.82);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    box-shadow:0 1px 0 var(--line);
+}
+header.on-dark:not(.scrolled) .logo-word{fill:#fff}
+header.on-dark:not(.scrolled) nav a{color:rgba(255,255,255,.85)}
+header.on-dark:not(.scrolled) .burger span{background:#fff}
+.logo svg{height:38px;width:auto}
+nav{display:flex;align-items:center;gap:38px}
+nav a{
+    font-family:'Sora',sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.06em;
+    color:var(--navy-3);position:relative;padding:4px 0;transition:color .3s;
+}
+nav a::after{
+    content:'';position:absolute;left:0;bottom:-2px;width:100%;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,var(--blue),var(--green));
+    transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease);
+}
+nav a:hover::after{transform:scaleX(1);transform-origin:left}
+nav .nav-cta{
+    padding:11px 24px;border-radius:100px;color:#fff!important;
+    background:linear-gradient(120deg,var(--blue),var(--navy-3));
+    box-shadow:0 10px 24px -10px rgba(74,124,191,.7);
+    transition:transform .3s var(--ease),box-shadow .3s;
+}
+nav .nav-cta::after{display:none}
+nav .nav-cta:hover{transform:translateY(-2px)}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:950}
+.burger span{width:26px;height:2px;background:var(--navy-3);border-radius:2px;transition:.35s var(--ease)}
+@media(max-width:900px){
+    nav{position:fixed;inset:0;background:var(--navy);flex-direction:column;justify-content:center;gap:30px;
+        clip-path:circle(0 at calc(100% - 46px) 40px);transition:clip-path .7s var(--ease);}
+    nav.open{clip-path:circle(150% at calc(100% - 46px) 40px)}
+    nav a{color:#fff!important;font-size:22px}
+    .burger{display:flex}
+    body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:#fff}
+    body.menu-open .burger span:nth-child(2){opacity:0}
+    body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:#fff}
+}
+
+/* illuminated page hero */
+.page-hero{
+    position:relative;background:var(--navy);overflow:hidden;
+    padding:190px 0 120px;
+}
+.page-hero .beam{
+    position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(60% 90% at 50% -20%,rgba(127,166,214,.35),transparent 60%),
+      radial-gradient(40% 60% at 78% 10%,rgba(85,184,123,.22),transparent 60%);
+    animation:beam 9s ease-in-out infinite alternate;
+}
+@keyframes beam{from{opacity:.7;transform:translateX(-3%)}to{opacity:1;transform:translateX(3%)}}
+.page-hero .grid-lines{
+    position:absolute;inset:0;opacity:.4;
+    background-image:linear-gradient(rgba(127,166,214,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(127,166,214,.09) 1px,transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(80% 80% at 50% 0%,#000 20%,transparent 100%);
+    -webkit-mask-image:radial-gradient(80% 80% at 50% 0%,#000 20%,transparent 100%);
+}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,64px)}
+.page-hero .wrap{position:relative;z-index:2}
+.crumb{
+    font-family:'Sora',sans-serif;font-size:12px;font-weight:600;letter-spacing:.38em;text-transform:uppercase;
+    color:var(--green-soft);display:inline-flex;align-items:center;gap:12px;margin-bottom:26px;
+}
+.crumb::before{content:'';width:40px;height:1px;background:linear-gradient(90deg,var(--green),transparent)}
+.page-hero h1{color:#fff;font-size:clamp(40px,6.4vw,84px);letter-spacing:-.02em}
+.page-hero h1 em{font-style:normal;background:linear-gradient(100deg,var(--blue-soft),var(--green-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
+.page-hero p{color:rgba(220,231,245,.8);max-width:60ch;margin-top:24px;font-size:18px}
+.hero-jump{display:flex;flex-wrap:wrap;gap:12px;margin-top:44px}
+.hero-jump a{
+    font-family:'Sora',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;color:#fff;
+    padding:11px 22px;border-radius:100px;border:1px solid rgba(255,255,255,.22);
+    transition:.35s var(--ease);backdrop-filter:blur(4px);
+}
+.hero-jump a:hover{border-color:var(--green);color:var(--green-soft);transform:translateY(-2px)}
+
+/* layout: sticky rail + content */
+.page-body{padding:clamp(70px,9vw,120px) 0}
+.page-grid{display:grid;grid-template-columns:250px 1fr;gap:clamp(36px,5vw,80px);align-items:start}
+@media(max-width:980px){.page-grid{grid-template-columns:1fr}.rail{display:none}}
+.rail{position:sticky;top:110px}
+.rail h4{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute);margin-bottom:18px;font-weight:600}
+.rail a{
+    display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;margin-bottom:6px;
+    font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:var(--body);
+    border:1px solid transparent;transition:.3s;
+}
+.rail a i{width:6px;height:6px;border-radius:50%;background:var(--line);transition:.3s;flex:none}
+.rail a:hover{color:var(--ink);background:#fff}
+.rail a.active{color:var(--ink);background:#fff;border-color:var(--line);box-shadow:0 10px 24px -16px rgba(11,20,37,.25)}
+.rail a.active i{background:var(--green);box-shadow:0 0 0 4px var(--green-pale)}
+.rail .back{margin-top:26px;color:var(--blue);font-size:13px}
+
+/* reveal */
+[data-reveal]{opacity:0;transform:translateY(40px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+[data-reveal].in{opacity:1;transform:none}
+
+/* service section */
+.svc{padding-bottom:clamp(70px,9vw,110px);margin-bottom:clamp(70px,9vw,110px);border-bottom:1px solid var(--line)}
+.svc:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.svc-head{display:flex;align-items:center;gap:22px;margin-bottom:16px}
+.svc-head .glyph{
+    width:76px;height:76px;flex:none;border-radius:22px;display:grid;place-items:center;position:relative;overflow:hidden;
+}
+.svc-head .glyph svg{width:40px;height:40px;stroke:var(--navy-3);position:relative}
+.svc[data-tint="peach"] .glyph{background:linear-gradient(135deg,#FBE3C2,#FAE9D2)}
+.svc[data-tint="mint"]  .glyph{background:linear-gradient(135deg,#BFE8CE,#D4F0DF)}
+.svc[data-tint="lime"]  .glyph{background:linear-gradient(135deg,#E4F0BE,#ECF4D2)}
+.svc[data-tint="lilac"] .glyph{background:linear-gradient(135deg,#DCD8F5,#E7E4F8)}
+.svc-head h2{font-size:clamp(28px,3.6vw,44px);letter-spacing:-.02em}
+.svc-head .kick{display:block;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:var(--blue);margin-top:6px}
+.svc > p{max-width:72ch;margin-top:18px}
+.svc p b{color:var(--ink)}
+
+/* sub-capability accordion-ish cards */
+.subs{display:grid;gap:18px;margin-top:44px}
+.sub{
+    background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;
+    transition:box-shadow .4s;
+}
+.sub:hover{box-shadow:var(--shadow)}
+.sub summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;padding:24px 28px;
+    font-family:'Sora',sans-serif;font-weight:600;font-size:18px;color:var(--ink);
+}
+.sub summary::-webkit-details-marker{display:none}
+.sub summary .num{
+    font-size:12px;color:var(--blue);letter-spacing:.14em;width:34px;flex:none;font-weight:700;
+}
+.sub summary .chev{
+    margin-left:auto;width:34px;height:34px;flex:none;border-radius:50%;border:1px solid var(--line);
+    display:grid;place-items:center;transition:transform .4s var(--ease),background .3s,border-color .3s;
+}
+.sub summary .chev svg{width:14px;height:14px;stroke:var(--navy-3);stroke-width:2.5;fill:none}
+.sub[open] summary .chev{transform:rotate(135deg);background:var(--green-pale);border-color:transparent}
+.sub .sub-body{padding:0 28px 28px 80px}
+@media(max-width:640px){.sub .sub-body{padding:0 24px 24px 24px}}
+.sub .sub-body p{margin-bottom:14px;font-size:16px}
+.sub .sub-body ul{margin:10px 0 14px 20px}
+.sub .sub-body li{margin-bottom:8px}
+.sub .sub-body li::marker{color:var(--green)}
+
+/* app portfolio */
+.apps-label{font-family:'Sora',sans-serif;font-weight:700;color:var(--ink);font-size:19px;margin:48px 0 24px}
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.app-tile{
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px 24px;text-align:center;
+    transition:transform .45s var(--ease),box-shadow .45s;
+}
+.app-tile:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
+.app-tile h4{font-size:17px;margin-bottom:18px}
+.app-tile .app-ic{width:76px;height:76px;margin:0 auto 20px;border-radius:20px;display:grid;place-items:center}
+.app-tile .badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.badge{
+    font-family:'Sora',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.04em;color:#fff;
+    background:var(--navy);border-radius:8px;padding:7px 12px;display:inline-flex;align-items:center;gap:6px;
+    transition:background .3s;
+}
+.badge:hover{background:var(--navy-3)}
+.badge svg{width:12px;height:12px;fill:#fff}
+
+/* platform grid (integrations) */
+.plat-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px}
+@media(max-width:760px){.plat-grid{grid-template-columns:1fr}}
+.plat{
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px;
+    transition:transform .45s var(--ease),box-shadow .45s;
+}
+.plat:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.plat h4{font-size:18px;display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.plat h4 .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.plat .chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+    font-family:'Sora',sans-serif;font-size:12.5px;font-weight:600;color:var(--navy-3);
+    background:var(--blue-pale);border-radius:100px;padding:7px 15px;transition:.3s;
+}
+.chip:hover{background:var(--green-pale);color:#2f8a56;transform:translateY(-2px)}
+
+/* pull quote (SEO philosophy) */
+.pull{
+    position:relative;margin:44px 0;padding:40px 44px;border-radius:24px;overflow:hidden;
+    background:var(--navy);color:#fff;
+}
+.pull::after{
+    content:'';position:absolute;width:60%;height:120%;right:-20%;top:-10%;filter:blur(70px);opacity:.5;
+    background:radial-gradient(circle at 40% 40%,rgba(74,124,191,.8),transparent 60%),radial-gradient(circle at 70% 70%,rgba(85,184,123,.6),transparent 55%);
+}
+.pull p{position:relative;z-index:2;font-family:'Sora',sans-serif;font-size:clamp(20px,2.4vw,28px);font-weight:600;letter-spacing:-.01em;line-height:1.4}
+.pull small{position:relative;z-index:2;display:block;margin-top:12px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--green-soft)}
+
+/* testimonial card */
+.say{
+    margin-top:48px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--green);
+    border-radius:20px;padding:34px 38px;position:relative;
+    transition:box-shadow .4s;
+}
+.say:hover{box-shadow:var(--shadow)}
+.say .qm{font-family:'Sora',sans-serif;font-size:64px;line-height:.5;color:var(--green);display:block;margin-bottom:18px}
+.say blockquote{border:none;font-size:16.5px;color:var(--body);font-style:italic;max-width:72ch}
+.say figcaption{margin-top:18px;font-family:'Sora',sans-serif;font-size:13.5px;font-weight:700;color:var(--ink)}
+.say figcaption span{display:block;font-weight:500;color:var(--mute);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+
+/* CTA + footer */
+.cta{background:var(--navy);position:relative;overflow:hidden;padding:clamp(80px,10vw,130px) 0;text-align:center}
+.cta::before{
+    content:'';position:absolute;width:70%;height:120%;left:15%;top:-10%;filter:blur(90px);opacity:.4;
+    background:radial-gradient(circle at 35% 40%,rgba(74,124,191,.7),transparent 60%),radial-gradient(circle at 65% 60%,rgba(85,184,123,.55),transparent 55%);
+}
+.cta .wrap{position:relative;z-index:2}
+.cta h2{color:#fff;font-size:clamp(30px,4.6vw,56px);letter-spacing:-.02em}
+.cta h2 em{font-style:normal;background:linear-gradient(100deg,var(--blue-soft),var(--green-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta p{color:rgba(220,231,245,.75);max-width:52ch;margin:20px auto 0}
+.btn{
+    position:relative;display:inline-flex;align-items:center;gap:12px;margin-top:38px;
+    font-family:'Sora',sans-serif;font-size:14px;font-weight:600;letter-spacing:.04em;
+    padding:17px 34px;border-radius:100px;overflow:hidden;isolation:isolate;cursor:pointer;border:none;
+    color:var(--navy);background:linear-gradient(120deg,var(--green-soft),var(--green));
+    transition:transform .35s var(--ease),box-shadow .35s,color .35s;
+}
+.btn::before{
+    content:'';position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(120deg,var(--blue-soft),var(--blue));
+    transform:translateX(-101%);transition:transform .45s var(--ease);
+}
+.btn:hover{color:#fff;transform:translateY(-3px);box-shadow:0 18px 35px -12px rgba(85,184,123,.55)}
+.btn:hover::before{transform:none}
+footer{background:#070E1B;color:rgba(220,231,245,.6);padding:56px 0 34px;border-top:1px solid rgba(255,255,255,.05)}
+.foot-base{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;letter-spacing:.06em;align-items:center}
+footer .logo svg{height:30px}
+
+@media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
+    html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-ring"></div>
+<div class="cursor-dot"></div>
+
+<header id="header" class="on-dark">
+    <a class="logo" href="index.html" aria-label="arroWebs home">
+        <svg viewBox="0 0 480 100" role="img" aria-label="arroWebs">
+            <polygon points="84,2 140,2 111,56" fill="#55B87B"/>
+            <circle cx="14" cy="85" r="13" fill="#4A7CBF"/>
+            <polygon points="31,98 46,98 71,44 56,44" fill="#4A7CBF"/>
+            <polygon points="48,98 63,98 97,20 82,20" fill="#4A7CBF"/>
+            <polygon points="65,98 80,98 122,2 107,2" fill="#4A7CBF"/>
+            <text class="logo-word" x="158" y="76" font-family="Manrope,sans-serif" font-weight="700" font-size="72" fill="#4A7CBF" letter-spacing="-1">arroWebs</text>
+        </svg>
+    </a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <nav id="nav">
+        <a href="index.html#who">Who We Are</a>
+        <a href="index.html#services">What We Do</a>
+        <a href="index.html#voices">Clients</a>
+        <a href="index.html#products">Products</a>
+        <a class="nav-cta" href="index.html#contact">Start a Project</a>
+    </nav>
+</header>
+
+<!-- illuminated hero -->
+<section class="page-hero">
+    <div class="beam"></div>
+    <div class="grid-lines"></div>
+    <div class="wrap">
+        <div class="crumb">What We Do</div>
+        <h1>Every discipline,<br><em>in full depth.</em></h1>
+        <p>From bespoke software to search visibility — here's the complete picture of how arroWebs partners with you, end to end.</p>
+        <div class="hero-jump">
+            <a href="#custom-software" data-cursor>Custom Software</a>
+            <a href="#mobile-applications" data-cursor>Mobile Applications</a>
+            <a href="#integration-services" data-cursor>Integration Services</a>
+            <a href="#search-engine-optimization" data-cursor>Search Engine Optimization</a>
+        </div>
+    </div>
+</section>
+
+<div class="page-body">
+    <div class="wrap page-grid">
+
+        <!-- sticky rail -->
+        <aside class="rail">
+            <h4>On this page</h4>
+            <a href="#custom-software" data-rail><i></i>Custom Software</a>
+            <a href="#mobile-applications" data-rail><i></i>Mobile Applications</a>
+            <a href="#integration-services" data-rail><i></i>Integration Services</a>
+            <a href="#search-engine-optimization" data-rail><i></i>Search Engine Optimization</a>
+            <a class="back" href="index.html" data-cursor>← Back to home</a>
+        </aside>
+
+        <div class="page-content">
+
+            <!-- ============ CUSTOM SOFTWARE ============ -->
+            <section class="svc" data-tint="peach" id="custom-software">
+                <div class="svc-head" data-reveal>
+                    <div class="glyph">
+                        <svg viewBox="0 0 64 64" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="14" y="10" width="42" height="30" rx="3"/><path d="M27 46h16M35 40v6"/><path d="M22 50h26"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2>Custom Software</h2>
+                        <span class="kick">Software Designed for Possibilities</span>
+                    </div>
+                </div>
+                <p data-reveal>Your bespoke software will be <b>unique, secure and unavailable to your competitors</b>. Explore each capability below.</p>
+
+                <div class="subs">
+                    <details class="sub" open data-reveal>
+                        <summary data-cursor><span class="num">01</span>Web Applications<span class="chev"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+                        <div class="sub-body">
+                            <p>Web Applications can be made to achieve any automation that a business needs as a software that runs on the web. So, it can be accessed from anywhere in the world using any computer that has access to the internet. It allows easy management of operations that require multiple locations, ensures secure storage of data and reduced IT costs.</p>
+                            <p>Many businesses have benefited from the solutions we have built to address their requirements. Our consulting approach has provided them with the most appropriate path to their automation stages such that existing processes are phased out in a systematic manner.</p>
+                        </div>
+                    </details>
+
+                    <details class="sub" data-reveal>
+                        <summary data-cursor><span class="num">02</span>CRM Solutions<span class="chev"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+                        <div class="sub-body">
+                            <p>Customer relationship management plays a major role in managing a company's interaction with its customers and prospective customers. arroWebs designs Customer Relationship Models that helps businesses meet the critical needs of the ever evolving marketplace and eventually customer needs.</p>
+                            <p>Our applications conform to the client's unique requirements and help strengthen customer relationships by automating important sales, marketing, customer support, engineering, and quality assurance processes across the organization. We have a transparent system that helps keeps us in pace with our customer needs.</p>
+                        </div>
+                    </details>
+
+                    <details class="sub" data-reveal>
+                        <summary data-cursor><span class="num">03</span>Content Management Systems<span class="chev"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+                        <div class="sub-body">
+                            <p>Web Content Management Systems cuts down on the needs for an enterprise to have a team with technical know-how to be able to update a web page's content. In essence, it allows non technical staff to create or amend web pages without the need to involve the technical staff. It manages small units of information (web pages) so each unit of information is interconnected via a navigation structure or path.</p>
+                            <p>The team at arroWebs has developed a <b>MVC framework</b> that forms the back-bone of all custom developed systems. arroWebs also works with <b>WordPress</b>.</p>
+                            <p><b>Advantages of using a Content Management System (CMS):</b></p>
+                            <ul>
+                                <li>Cost effective solution.</li>
+                                <li>Easy maintenance.</li>
+                                <li>Search engine friendly.</li>
+                                <li>Easy management using tailored modules.</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <details class="sub" data-reveal>
+                        <summary data-cursor><span class="num">04</span>Web Portals<span class="chev"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+                        <div class="sub-body">
+                            <p>Web Portals are generally websites that provide content from different sources into one centralized place. They can be configured and customized to fit the needs to the users and roles. Portals can utilize many different integration methods to gather and organize data.</p>
+                            <p>We at arroWebs, have extensive experience in building large web portals with varying degree of user roles and complexity.</p>
+                        </div>
+                    </details>
+
+                    <details class="sub" data-reveal>
+                        <summary data-cursor><span class="num">05</span>E-Commerce Solutions<span class="chev"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+                        <div class="sub-body">
+                            <p>arroWebs can handle all aspects of e-commerce strategy and development, including end-to-end security, distributed transaction processing, XML/JSON interoperability, integration with online payment, and order processing.</p>
+                            <p>arroWebs is capable of integrating or building custom applications for product presentation and browsing, shopping cart functionality, order tracking, account management, payment resolution, personalization, content management, customer relationship management, as well as inventory and catalog management.</p>
+                            <p>arroWebs also provides customizing <b>Shopify</b> to get up and running fast!</p>
+                        </div>
+                    </details>
+                </div>
+
+                <figure class="say" data-reveal>
+                    <span class="qm">“</span>
+                    <blockquote>Since we contracted arroWebs to design our website, the service and responsiveness provided by their professionals has continuously exceeded our expectations. Their ability to understand our requirements, as well as their insight and creativity, has provided us with a finished product that we can be very proud of.</blockquote>
+                    <figcaption>What they say <span>Custom Software Client</span></figcaption>
+                </figure>
+            </section>
+
+            <!-- ============ MOBILE APPLICATIONS ============ -->
+            <section class="svc" data-tint="mint" id="mobile-applications">
+                <div class="svc-head" data-reveal>
+                    <div class="glyph">
+                        <svg viewBox="0 0 64 64" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="20" y="6" width="24" height="52" rx="5"/><path d="M28 51h8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2>Mobile Applications</h2>
+                        <span class="kick">Mobile Apps for most popular platforms</span>
+                    </div>
+                </div>
+                <p data-reveal>arroWebs pioneers in the mobile application development sphere, with a host of successful accolades to its name. We believe in moving hand in hand with the latest technologies and thus leave no stone unturned in mastering the enhancements that come along with the release of new versions.</p>
+                <p data-reveal>The popularity of mobile applications is on an all time high owing to the increase in the number of mobile users. As these mobile applications are deployed on hand-held devices there is a wide array of screen sizes which are to be considered, along with hardware and software specifications of these devices. <b>At arroWebs every application developed undergoes a rigorous testing procedure before it is made available on app stores.</b></p>
+                <p data-reveal>In addition to developing native applications, we have also guided many customer use cases to adopt <b>Progressive Web Apps (PWA)</b> as well as applications on minimal wrappers that allow for cost effective onboarding and minimal maintenance. Our approach to the architecture is based on understanding the requirement and phasing the rollouts on either of these options or one followed by the other.</p>
+
+                <div class="apps-label" data-reveal>Some of the successful mobile applications we have developed are:</div>
+                <div class="apps-grid">
+                    <div class="app-tile" data-reveal>
+                        <div class="app-ic" style="background:#F5F8FC">
+                            <svg viewBox="0 0 64 64" width="52" fill="none" stroke="#1E2A3B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 26c-3-6 1-10 5-7l6 5V12c0-5 7-5 7 0v7c0-4 6-4 6 0 0-3.4 6-3.2 6 .5 0-3 6-2.6 6 1v14c0 10-7 18-17 18-7 0-11-3-14-8z"/></svg>
+                        </div>
+                        <h4>Dailyhuman</h4>
+                        <div class="badges">
+                            <a class="badge" href="#" data-cursor><svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08z"/></svg>App Store</a>
+                        </div>
+                    </div>
+                    <div class="app-tile" data-reveal>
+                        <div class="app-ic" style="background:#F5F8FC">
+                            <svg viewBox="0 0 64 64" width="52"><g><circle cx="32" cy="32" r="9" fill="#1E2A3B"/><circle cx="32" cy="32" r="4" fill="#fff"/><path d="M32 6a26 26 0 0 1 14 4l-9 12a11 11 0 0 0-5-1z" fill="#E8734A"/><path d="M52 12a26 26 0 0 1 8 13l-15 2a11 11 0 0 0-3-6z" fill="#5BC2C9"/><path d="M60 33a26 26 0 0 1-4 14l-12-9a11 11 0 0 0 1-5z" fill="#8B6CC1"/><path d="M52 52a26 26 0 0 1-13 8l-2-15a11 11 0 0 0 6-3z" fill="#D65959"/><path d="M31 58a26 26 0 0 1-14-4l9-12a11 11 0 0 0 5 1z" fill="#E8A64A"/><path d="M12 52a26 26 0 0 1-8-13l15-2a11 11 0 0 0 3 6z" fill="#6BA5D8"/><path d="M4 31a26 26 0 0 1 4-14l12 9a11 11 0 0 0-1 5z" fill="#67B87F"/><path d="M12 12A26 26 0 0 1 25 4l2 15a11 11 0 0 0-6 3z" fill="#E88AA5"/></g></svg>
+                        </div>
+                        <h4>HLSS</h4>
+                        <div class="badges">
+                            <a class="badge" href="#" data-cursor><svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08z"/></svg>App Store</a>
+                            <a class="badge" href="#" data-cursor><svg viewBox="0 0 24 24"><path d="M3 20.5V3.5c0-.6.34-.93.66-1.11L13.7 12.4 3.66 21.6c-.32-.17-.66-.5-.66-1.1z"/></svg>Google Play</a>
+                        </div>
+                    </div>
+                    <div class="app-tile" data-reveal>
+                        <div class="app-ic" style="background:#F5F8FC">
+                            <svg viewBox="0 0 64 64" width="52"><circle cx="36" cy="32" r="24" fill="#2f8a56"/><path d="M8 32a24 24 0 0 1 40-18L60 32 48 50A24 24 0 0 1 8 32z" fill="none"/><path d="M12 32a22 22 0 0 1 36-16.5V48.5A22 22 0 0 1 12 32z" fill="#4A7CBF"/><circle cx="20" cy="26" r="3" fill="#0B1425"/><path d="M34 22l18 10-18 10z" fill="#F0C64A"/></svg>
+                        </div>
+                        <h4>Bird Calls &amp; Songs</h4>
+                        <div class="badges">
+                            <a class="badge" href="#" data-cursor><svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08z"/></svg>App Store</a>
+                            <a class="badge" href="#" data-cursor><svg viewBox="0 0 24 24"><path d="M3 20.5V3.5c0-.6.34-.93.66-1.11L13.7 12.4 3.66 21.6c-.32-.17-.66-.5-.66-1.1z"/></svg>Google Play</a>
+                        </div>
+                    </div>
+                    <div class="app-tile" data-reveal>
+                        <div class="app-ic" style="background:#F5F8FC">
+                            <svg viewBox="0 0 64 64" width="50"><polygon points="8,18 20,18 12,46 0,46" fill="#55B87B" transform="translate(6,0)"/><polygon points="26,18 38,18 30,46 18,46" fill="#4A7CBF" transform="translate(6,0)"/><polygon points="44,18 56,18 48,46 36,46" fill="#55B87B" transform="translate(6,0)"/></svg>
+                        </div>
+                        <h4>AWMaze.in</h4>
+                        <div class="badges">
+                            <a class="badge" href="#" data-cursor><svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08z"/></svg>App Store</a>
+                            <a class="badge" href="#" data-cursor><svg viewBox="0 0 24 24"><path d="M3 20.5V3.5c0-.6.34-.93.66-1.11L13.7 12.4 3.66 21.6c-.32-.17-.66-.5-.66-1.1z"/></svg>Google Play</a>
+                        </div>
+                    </div>
+                    <div class="app-tile" data-reveal>
+                        <div class="app-ic" style="background:#0B1425">
+                            <svg viewBox="0 0 64 64" width="42"><path d="M14 12h12l24 40H38z" fill="#fff"/><path d="M50 12H38L26 32l6 10z" fill="#C0392B"/></svg>
+                        </div>
+                        <h4>FleetAnalytix</h4>
+                        <div class="badges">
+                            <a class="badge" href="#" data-cursor><svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08z"/></svg>App Store</a>
+                        </div>
+                    </div>
+                </div>
+
+                <figure class="say" data-reveal>
+                    <span class="qm">“</span>
+                    <blockquote>The dedication of the folks at arroWebs is second to none. Combine that with their high level of technical expertise and that's why they are my go to partner. It's rare to find people that you want on your team regardless of the challenge. I appreciate all arroWebs has done for me and my team.</blockquote>
+                    <figcaption>What they say <span>Mobile Applications Client</span></figcaption>
+                </figure>
+            </section>
+
+            <!-- ============ INTEGRATION SERVICES ============ -->
+            <section class="svc" data-tint="lime" id="integration-services">
+                <div class="svc-head" data-reveal>
+                    <div class="glyph">
+                        <svg viewBox="0 0 64 64" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="32" cy="32" r="9"/><path d="M32 19v-8M32 53v-8M45 32h8M11 32h8M41 23l6-6M17 47l6-6M41 41l6 6M17 17l6 6"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2>Integration Services</h2>
+                        <span class="kick">Service Oriented Architecture Technologies</span>
+                    </div>
+                </div>
+                <p data-reveal>At arroWebs we specialize in <b>service oriented architecture (SOA)</b> that enable heterogeneous systems to communicate to each other to achieve rapid solutions to business requirements. Some of the platforms and integrations we have worked so far include the following. <b>We keep adding newer ones as they become viable and required in the projects.</b></p>
+
+                <div class="plat-grid">
+                    <div class="plat" data-reveal>
+                        <h4><span class="dot" style="background:#E8A64A"></span>Amazon Web Services</h4>
+                        <div class="chips">
+                            <span class="chip">EC2</span><span class="chip">S3</span><span class="chip">RDS</span><span class="chip">Lambda</span><span class="chip">CloudFront</span><span class="chip">SES</span><span class="chip">SQS</span>
+                        </div>
+                    </div>
+                    <div class="plat" data-reveal>
+                        <h4><span class="dot" style="background:#4A7CBF"></span>Google Cloud</h4>
+                        <div class="chips">
+                            <span class="chip">Compute Engine</span><span class="chip">Cloud Storage</span><span class="chip">Cloud SQL</span><span class="chip">Maps APIs</span><span class="chip">Firebase</span>
+                        </div>
+                    </div>
+                    <div class="plat" data-reveal>
+                        <h4><span class="dot" style="background:#55B87B"></span>Payment</h4>
+                        <div class="chips">
+                            <span class="chip">Stripe</span><span class="chip">PayPal</span><span class="chip">USAePay</span><span class="chip">Authorize.Net</span><span class="chip">Braintree</span>
+                        </div>
+                    </div>
+                    <div class="plat" data-reveal>
+                        <h4><span class="dot" style="background:#8B6CC1"></span>Email Marketing &amp; CRM</h4>
+                        <div class="chips">
+                            <span class="chip">Mailchimp</span><span class="chip">ActiveCampaign</span><span class="chip">Zoho</span><span class="chip">SendGrid</span><span class="chip">Constant Contact</span>
+                        </div>
+                    </div>
+                </div>
+
+                <figure class="say" data-reveal>
+                    <span class="qm">“</span>
+                    <blockquote>After working with a variety of providers, arroWebs is the best value I have found in the industry. Responsive, innovative, experienced and capable of making things work. More impressive — these guys make accurate estimates on time and cost of completion. If you know what you want, they can make it happen — if you don't, they have no shortage of insightful ideas to meet your needs, even if you can't articulate them yet. Highly recommended!</blockquote>
+                    <figcaption>Patrick Henry <span>CEO, Aegis Academy</span></figcaption>
+                </figure>
+            </section>
+
+            <!-- ============ SEO ============ -->
+            <section class="svc" data-tint="lilac" id="search-engine-optimization">
+                <div class="svc-head" data-reveal>
+                    <div class="glyph">
+                        <svg viewBox="0 0 64 64" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="28" cy="28" r="16"/><path d="M40 40l14 14"/><path d="M20 30l5-6 5 4 6-9"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2>Search Engine Optimization</h2>
+                        <span class="kick">Let your customers find you!</span>
+                    </div>
+                </div>
+                <p data-reveal>Gone are the days when Search Engine Optimization was a special trick to figure out the formula to make a page achieve that coveted top spot. In the past, these tricks were learned and the search engine providers had to come up with a new formula. This cycle would just repeat until about 2012 when the whole market got turned upside down. Many folks realized there was no easy way around it.</p>
+                <p data-reveal>Search Engine Optimization (SEO) is a complex and intricate subject moving at an incredible rate at which the search technologies are ever evolving. Businesses are learning to be adaptive to change for the fear of outdated original business strategies.</p>
+
+                <div class="pull" data-reveal>
+                    <p>Do what makes sense — and be proactive.</p>
+                    <small>Our philosophy, driven by a simple concept</small>
+                </div>
+
+                <p data-reveal>Search engine providers care about one thing — <b>Relevance</b>. They want to give the best possible pages as an answer for what a user searches. It will show up if it's worth it. Shortcuts or tricks will always end up hurting a website in the end.</p>
+                <p data-reveal>Needless to say that the presentation of any page is important and to ensure the page aligns with expected protocols. At arroWebs, we approach our SEO strategy for each client from a true consulting mind set. We realize that every business is unique and has specific goals. <b>We work with our clients to help identify these goals and come up with a tailored plan that can involve several different strategies.</b></p>
+
+                <figure class="say" data-reveal>
+                    <span class="qm">“</span>
+                    <blockquote>Save Local Now has used arroWebs Search Engine Optimization for 4+ years, and we are VERY pleased with our results. Their enhanced SEO has allowed us to reach and partner with more Chambers and deliver a product of true value. Most importantly, it's helped more consumers find the 68,000 local businesses currently using our digital platform. The entire arroWebs team has done an incredible job getting to know our product and our niche market, and they've been an absolute pleasure to work with.</blockquote>
+                    <figcaption>Save Local Now <span>SEO Client, 4+ Years</span></figcaption>
+                </figure>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="wrap">
+        <h2 data-reveal>Ready to put this expertise <em>to work for you?</em></h2>
+        <p data-reveal>Tell us your goals — we'll bring the consulting approach, the engineering and the long-term partnership.</p>
+        <a class="btn" href="mailto:hello@arrowebs.com" data-reveal data-cursor>Talk to arroWebs →</a>
+    </div>
+</section>
+
+<footer>
+    <div class="wrap foot-base">
+        <a class="logo" href="index.html" aria-label="arroWebs">
+            <svg viewBox="0 0 480 100">
+                <polygon points="84,2 140,2 111,56" fill="#55B87B"/>
+                <circle cx="14" cy="85" r="13" fill="#4A7CBF"/>
+                <polygon points="31,98 46,98 71,44 56,44" fill="#4A7CBF"/>
+                <polygon points="48,98 63,98 97,20 82,20" fill="#4A7CBF"/>
+                <polygon points="65,98 80,98 122,2 107,2" fill="#4A7CBF"/>
+                <text x="158" y="76" font-family="Manrope,sans-serif" font-weight="700" font-size="72" fill="#ffffff" letter-spacing="-1">arroWebs</text>
+            </svg>
+        </a>
+        <span>© 2026 arroWebs. All rights reserved.</span>
+    </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* cursor */
+var dot = document.querySelector('.cursor-dot'),
+    ring = document.querySelector('.cursor-ring'),
+    mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+document.addEventListener('mousemove', function(e){
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx+'px'; dot.style.top = my+'px';
+});
+(function ringLoop(){
+    rx += (mx-rx)*0.16; ry += (my-ry)*0.16;
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(ringLoop);
+})();
+document.addEventListener('mouseover', function(e){
+    if (e.target.closest('a,button,summary,[data-cursor]')) document.body.classList.add('cursor-hover');
+});
+document.addEventListener('mouseout', function(e){
+    if (e.target.closest('a,button,summary,[data-cursor]')) document.body.classList.remove('cursor-hover');
+});
+
+/* header */
+var header = document.getElementById('header'),
+    pageHero = document.querySelector('.page-hero');
+function onScrollHeader(){
+    header.classList.toggle('scrolled', scrollY > 40);
+    header.classList.toggle('on-dark', scrollY < pageHero.offsetHeight - 80);
+}
+addEventListener('scroll', onScrollHeader, {passive:true}); onScrollHeader();
+
+var burger = document.getElementById('burger'), nav = document.getElementById('nav');
+burger.addEventListener('click', function(){
+    nav.classList.toggle('open');
+    document.body.classList.toggle('menu-open');
+});
+nav.addEventListener('click', function(e){
+    if (e.target.tagName === 'A'){ nav.classList.remove('open'); document.body.classList.remove('menu-open'); }
+});
+
+/* reveals */
+var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+}, {threshold:0.1, rootMargin:'0px 0px -5% 0px'});
+document.querySelectorAll('[data-reveal]').forEach(function(el, i){
+    el.style.transitionDelay = (i%3)*0.08 + 's';
+    io.observe(el);
+});
+
+/* rail scroll-spy */
+var railLinks = document.querySelectorAll('[data-rail]');
+var sections = Array.prototype.map.call(railLinks, function(a){
+    return document.querySelector(a.getAttribute('href'));
+});
+function spy(){
+    var current = 0;
+    sections.forEach(function(s, i){
+        if (s && s.getBoundingClientRect().top < innerHeight*0.4) current = i;
+    });
+    railLinks.forEach(function(a, i){ a.classList.toggle('active', i===current); });
+}
+addEventListener('scroll', spy, {passive:true}); spy();
+})();
+</script>
+</body>
+</html>
